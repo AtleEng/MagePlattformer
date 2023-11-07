@@ -9,26 +9,18 @@ namespace Physics
     public class PhysicsBody : Component
     {
         public float mass = 1;
-        public Vector2 velocity;
-        public Vector2 acceleration;
-        public float drag;
-        
+        public Vector2 velocity = Vector2.Zero;
+        public Vector2 acceleration = Vector2.Zero;
+        public float dragX = 0f;
+        public float dragY = 0f;
+
         public Vector2 Gravity = new Vector2(0, 9.82f);
 
-        public void AddForce(float force, float angle)
+        public void AddForce(Vector2 force)
         {
-            double radians = angle * Math.PI / 180.0; // Convert degrees to radians
+            if (mass == 0) { mass = 1; }
 
-            // Calculate the x and y components of the vector
-            double x = Math.Cos(radians);
-            double y = Math.Sin(radians);
-
-            // Normalize the vector to have a length of 1
-            double length = Math.Sqrt(x * x + y * y);
-            x /= length;
-            y /= length;
-
-            acceleration += new Vector2((float)x, (float)y) * force / mass;
+            acceleration += force / mass;
         }
     }
 }

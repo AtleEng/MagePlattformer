@@ -19,8 +19,9 @@ namespace Engine
             AddComponent<Sprite>(sprite);
             PhysicsBody physicsBody = new PhysicsBody
             {
-                drag = 0.1f,
-                Gravity = new Vector2(0, 30f)
+                dragX = 1f,
+                dragY = 0,
+                Gravity = new Vector2(0, 20f)
             };
             AddComponent<PhysicsBody>(physicsBody);
 

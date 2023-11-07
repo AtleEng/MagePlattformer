@@ -8,6 +8,7 @@ namespace Engine
 {
     public class PlayerMovement : Component, IScript
     {
+        float maxHorizantalSpeed = 7;
         PhysicsBody physicsBody;
         public override void Start()
         {
@@ -18,16 +19,17 @@ namespace Engine
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
                 physicsBody.velocity.Y = 0;
-                physicsBody.AddForce(1000, 270);
+                physicsBody.velocity.Y = -15;
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
             {
-                physicsBody.AddForce(50, 0);
+                physicsBody.AddForce(new Vector2(20,0));
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
             {
-                physicsBody.AddForce(-50, 0);
+                physicsBody.AddForce(new Vector2(-20,0));
             }
+            physicsBody.velocity.X = Math.Clamp(physicsBody.velocity.X, -maxHorizantalSpeed, maxHorizantalSpeed);
         }
     }
 }
