@@ -26,6 +26,12 @@ namespace Engine
             AddComponent<PhysicsBody>(physicsBody);
 
             AddComponent<PlayerMovement>(new PlayerMovement());
+            
+            Collider collider = new Collider
+            {
+                
+            };
+            AddComponent<Collider>(collider);
         }
     }
 }

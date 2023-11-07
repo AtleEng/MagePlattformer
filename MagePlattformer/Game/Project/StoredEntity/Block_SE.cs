@@ -2,6 +2,7 @@ using System.Numerics;
 using System.Collections.Generic;
 using Raylib_cs;
 using Engine;
+using Physics;
 
 namespace Engine
 {
@@ -11,13 +12,19 @@ namespace Engine
         {
             name = "Block";
 
-           Sprite sprite = new Sprite
+            Sprite sprite = new Sprite
             {
                 spriteSheet = Raylib.LoadTexture(@"C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\Game\Project\Sprites\simple.png"),
                 spriteGrid = new Vector2(2, 2),
                 FrameIndex = 2
             };
             AddComponent<Sprite>(sprite);
+
+            Collider collider = new Collider
+            {
+                
+            };
+            AddComponent<Collider>(collider);
         }
     }
 }

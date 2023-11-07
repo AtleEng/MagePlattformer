@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Numerics;
 using CoreEngine;
 using Engine;
@@ -23,6 +24,47 @@ public class PhysicsSystem : GameSystem
                 gameEntity.transform.position += physicsBody.velocity * delta;
 
                 physicsBody.acceleration = Vector2.Zero;
+            }
+
+            Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
+            if (collider != null && physicsBody != null)
+            {
+                foreach (GameEntity otherGameEntity in Core.activeGameEntities)
+                {
+                    Collider? otherCollider = otherGameEntity.components.ContainsKey(typeof(Collider)) ? otherGameEntity.components[typeof(Collider)] as Collider : null;
+                    if (otherCollider != null && otherCollider != collider)
+                    {
+                        // Calculate the overlap on both X and Y axes
+                       float xOverlap = Math.Min(gameEntity.transform.position.X + collider.width, otherGameEntity.transform.position.X + otherCollider.width) - Math.Max(gameEntity.transform.position.X, otherGameEntity.transform.position.X);
+                        float yOverlap = Math.Min(gameEntity.transform.position.Y + collider.height, otherGameEntity.transform.position.Y + otherCollider.height) - Math.Max(otherGameEntity.transform.position.Y, otherGameEntity.transform.position.Y);
+
+                        // Determine the axis of minimum overlap
+                        if (xOverlap < yOverlap)
+                        {
+                            // If the overlap is smaller on the X-axis, resolve the collision along the X-axis
+                            if (gameEntity.transform.position.X < otherGameEntity.transform.position.X)
+                            {
+                                gameEntity.transform.position.X = otherGameEntity.transform.position.X - collider.width;
+                            }
+                            else
+                            {
+                                gameEntity.transform.position.X = otherGameEntity.transform.position.X + otherCollider.width;
+                            }
+                        }
+                        else
+                        {
+                            // If the overlap is smaller on the Y-axis, resolve the collision along the Y-axis
+                            if (gameEntity.transform.position.Y < otherGameEntity.transform.position.Y)
+                            {
+                                gameEntity.transform.position.Y = otherGameEntity.transform.position.Y - collider.height;
+                            }
+                            else
+                            {
+                                gameEntity.transform.position.Y = otherGameEntity.transform.position.Y + otherCollider.height;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

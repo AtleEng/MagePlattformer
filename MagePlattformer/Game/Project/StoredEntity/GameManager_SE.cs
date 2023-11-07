@@ -12,7 +12,7 @@ namespace Engine
 
             EntityManager.SpawnEntity(new Player(), Vector2.Zero);
 
-            EntityManager.SpawnEntity(new Block(), new Vector2(0,3), new Vector2(5,1));
+            EntityManager.SpawnEntity(new Block(), new Vector2(0,7), new Vector2(10,3));
         }
     }
 }
