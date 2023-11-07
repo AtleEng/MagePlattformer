@@ -25,6 +25,9 @@ namespace CoreEngine
         //deltaTime variabler
         static float oldTime = 0;
         static float newTime = 0;
+
+        public static double physicsUpdateTimeStep = 0.1; // 0.1 seconds
+        static double physicsTimer = 0;
         public static void Start()
         {
             AddSystem(new ScriptSystem());
@@ -54,12 +57,12 @@ namespace CoreEngine
             activeGameEntities.Clear();
 
             GetAllActiveEntities(currentScene);
+
             // Uppdate all the systems in the right order
             foreach (var system in systems.Values)
             {
                 system.Update(delta);
             }
-
             UpdateChildren(currentScene);
 
             // Add and remove games entities
@@ -89,8 +92,8 @@ namespace CoreEngine
         {
             foreach (var child in parent.children)
             {
-                child.worldTransform.position = child.localTransform.position + parent.worldTransform.position;
-                child.worldTransform.size = child.localTransform.size * parent.worldTransform.size;
+                child.worldTransform.position = child.transform.position + parent.worldTransform.position;
+                child.worldTransform.size = child.transform.size * parent.worldTransform.size;
 
                 UpdateChildren(child);
             }

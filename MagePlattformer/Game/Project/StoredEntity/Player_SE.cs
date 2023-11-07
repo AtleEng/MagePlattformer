@@ -13,15 +13,15 @@ namespace Engine
 
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\Game\Project\Sprites\simple.png"),
+                spriteSheet = Raylib.LoadTexture(@"Project\Sprites\simple.png"),
                 spriteGrid = new Vector2(2, 2)
             };
             AddComponent<Sprite>(sprite);
             PhysicsBody physicsBody = new PhysicsBody
             {
-                dragX = 1f,
+                dragX = 0.3f,
                 dragY = 0,
-                Gravity = new Vector2(0, 20f)
+                Gravity = new Vector2(0, 50)
             };
             AddComponent<PhysicsBody>(physicsBody);
 

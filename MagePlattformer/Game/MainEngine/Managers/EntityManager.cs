@@ -13,8 +13,8 @@ namespace Engine
         public static void SpawnEntity(GameEntity entity, Vector2 position, Vector2 size) { SpawnEntity(entity, position, size, null); }
         public static void SpawnEntity(GameEntity entity, Vector2 position, Vector2 size, GameEntity parent)
         {
-            entity.localTransform.position = position;
-            entity.localTransform.size = size;
+            entity.transform.position = position;
+            entity.transform.size = size;
 
             if (parent != null)
             {

@@ -26,7 +26,7 @@ namespace CoreEngine
             Raylib.InitWindow(WindowSettings.startWindowWidth, WindowSettings.startWindowHeight, "Game Window");
             Raylib.SetWindowMinSize(400, 300);
 
-            Raylib.SetTargetFPS(30);
+            Raylib.SetTargetFPS(60);
 
             Raylib.SetExitKey(KeyboardKey.KEY_NULL);
 
@@ -89,7 +89,7 @@ namespace CoreEngine
                 (int)s.X, (int)s.Y //size
                 );
 
-                //Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
+                Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
 
                 if (sprite.spriteSheet.id != 0)
                 {
@@ -116,10 +116,10 @@ namespace CoreEngine
 
                     Raylib.DrawTexturePro(sprite.spriteSheet, source, destRec, Vector2.Zero, 0, sprite.colorTint);
                 }
-                //Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
+                Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
             }
-            //DisplayGrid();
-            //Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
+            DisplayGrid();
+            Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
         }
         void SetValuesOfWindow()
         {

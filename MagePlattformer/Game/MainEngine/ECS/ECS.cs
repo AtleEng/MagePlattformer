@@ -21,7 +21,7 @@ namespace Engine
 
         public bool isActive = true;
         public Transform worldTransform = new(Vector2.Zero, Vector2.One);
-        public Transform localTransform = new(Vector2.Zero, Vector2.One);
+        public Transform transform = new(Vector2.Zero, Vector2.One);
         public Dictionary<Type, Component> components = new();
 
         public GameEntity? parent;

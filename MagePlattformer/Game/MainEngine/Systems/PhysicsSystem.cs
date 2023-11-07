@@ -13,14 +13,14 @@ public class PhysicsSystem : GameSystem
             if (physicsBody != null)
             {
                 // Apply drag separately to X and Y
-                physicsBody.velocity.X /= 1 + physicsBody.dragX * delta;
-                physicsBody.velocity.Y /= 1 + physicsBody.dragY * delta;
+                physicsBody.velocity.X *= 1 - physicsBody.dragX * delta;
+                physicsBody.velocity.Y *= 1 - physicsBody.dragY * delta;
 
                 physicsBody.acceleration += physicsBody.Gravity;
 
                 physicsBody.velocity += physicsBody.acceleration * delta;
 
-                gameEntity.localTransform.position += physicsBody.velocity * delta;
+                gameEntity.transform.position += physicsBody.velocity * delta;
 
                 physicsBody.acceleration = Vector2.Zero;
             }
