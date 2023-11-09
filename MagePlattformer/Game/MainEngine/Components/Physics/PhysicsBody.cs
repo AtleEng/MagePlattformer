@@ -14,6 +14,8 @@ namespace Physics
         public float dragX = 0f;
         public float dragY = 0f;
 
+        public float elasticity = 0f;
+
         public Vector2 Gravity = new Vector2(0, 9.82f);
 
         public void AddForce(Vector2 force)

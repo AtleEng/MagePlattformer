@@ -26,6 +26,13 @@ namespace Engine
 
         public GameEntity? parent;
         public List<GameEntity> children = new();
+        public void OnTrigger()
+        {
+            foreach (Component component in components.Values)
+            {
+                component.OnTrigger();
+            }
+        }
         public virtual void OnInnit()
         {
 
@@ -34,7 +41,6 @@ namespace Engine
         {
             return $"IsActive:{isActive} Position:{worldTransform.position} Size:{worldTransform.size}";
         }
-
         public bool HasComponent<T>()
         {
             return components.ContainsKey(typeof(T));

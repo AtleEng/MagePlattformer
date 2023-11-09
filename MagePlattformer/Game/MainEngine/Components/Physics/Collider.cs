@@ -8,7 +8,6 @@ namespace Physics
 {
     public class Collider : Component
     {
-        public float width = 1;
-        public float height = 1;
+        public bool isTrigger;
     }
 }
