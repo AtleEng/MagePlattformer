@@ -24,5 +24,9 @@ namespace Physics
 
             acceleration += force / mass;
         }
+        public override string PrintStats()
+        {
+            return $"Velocity: {velocity}";
+        }
     }
 }

@@ -22,10 +22,10 @@ public class PhysicsSystem : GameSystem
             if (collider != null)
             {
                 Rectangle colliderBox = new Rectangle(
-                collider.gameEntity.transform.position.X - collider.gameEntity.transform.size.X / 2,
-                collider.gameEntity.transform.position.Y - collider.gameEntity.transform.size.Y / 2,
-                collider.gameEntity.transform.size.X,
-                collider.gameEntity.transform.size.Y
+                gameEntity.transform.position.X + collider.origin.X - collider.gameEntity.transform.size.X * collider.size.X / 2,
+                gameEntity.transform.position.Y + collider.origin.Y - collider.gameEntity.transform.size.Y * collider.size.Y / 2,
+                gameEntity.transform.size.X * collider.size.X,
+                gameEntity.transform.size.Y * collider.size.Y
                 );
 
                 foreach (GameEntity otherGameEntity in Core.activeGameEntities)
@@ -34,10 +34,10 @@ public class PhysicsSystem : GameSystem
                     if (otherCollider != null && otherCollider != collider)
                     {
                         Rectangle otherColliderBox = new Rectangle(
-                            otherGameEntity.transform.position.X - otherGameEntity.transform.size.X / 2,
-                            otherGameEntity.transform.position.Y - otherGameEntity.transform.size.Y / 2,
-                            otherGameEntity.transform.size.X,
-                            otherGameEntity.transform.size.Y
+                            otherGameEntity.transform.position.X + otherCollider.origin.X - otherGameEntity.transform.size.X * otherCollider.size.X / 2,
+                            otherGameEntity.transform.position.Y + otherCollider.origin.Y - otherGameEntity.transform.size.Y * otherCollider.size.Y / 2,
+                            otherGameEntity.transform.size.X * otherCollider.size.X,
+                            otherGameEntity.transform.size.Y * otherCollider.size.Y
                         );
 
                         if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox) && hasPhysics)
@@ -78,11 +78,11 @@ public class PhysicsSystem : GameSystem
         {
             if (box.x < otherBox.x)
             {
-                collider.gameEntity.transform.position.X = otherBox.x - box.width;
+                collider.gameEntity.transform.position.X = otherBox.x - box.width / 2;
             }
             else
             {
-                collider.gameEntity.transform.position.X = otherBox.x + otherBox.width;
+                collider.gameEntity.transform.position.X = otherBox.x + otherBox.width + box.width / 2;
             }
             physicsBody.velocity.X *= -1 * physicsBody.elasticity;
         }
@@ -90,11 +90,11 @@ public class PhysicsSystem : GameSystem
         {
             if (box.y < otherBox.y)
             {
-                collider.gameEntity.transform.position.Y = otherBox.y - box.height;
+                collider.gameEntity.transform.position.Y = otherBox.y - box.height / 2;
             }
             else
             {
-                collider.gameEntity.transform.position.Y = otherBox.y + otherBox.height;
+                collider.gameEntity.transform.position.Y = otherBox.y + otherBox.height + box.height / 2;
             }
             physicsBody.velocity.Y *= -1 * physicsBody.elasticity;
         }

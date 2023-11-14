@@ -3,6 +3,7 @@ using System.Numerics;
 using Raylib_cs;
 using CoreEngine;
 using Engine;
+using Physics;
 
 namespace CoreEngine
 {
@@ -76,6 +77,18 @@ namespace CoreEngine
             {
                 Sprite? spriteComponent = gameEntity.components.ContainsKey(typeof(Sprite)) ? gameEntity.components[typeof(Sprite)] as Sprite : null;
                 if (spriteComponent != null) { allSprites.Add(spriteComponent); }
+
+                Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
+                if (collider != null)
+                {
+                    Rectangle colliderBox = new Rectangle(
+                    gameEntity.transform.position.X + collider.origin.X - collider.gameEntity.transform.size.X * collider.size.X / 2,
+                    gameEntity.transform.position.Y + collider.origin.Y - collider.gameEntity.transform.size.Y * collider.size.Y / 2,
+                    gameEntity.transform.size.X * collider.size.X,
+                    gameEntity.transform.size.Y * collider.size.Y
+                    );
+                    Raylib.DrawRectangleRec(colliderBox, new Color(55, 255, 55, 100));
+                }
             }
             allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
@@ -118,6 +131,7 @@ namespace CoreEngine
                 }
                 Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
             }
+
             DisplayGrid();
             Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
         }

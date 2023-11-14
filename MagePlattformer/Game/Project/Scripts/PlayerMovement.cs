@@ -37,7 +37,7 @@ namespace Engine
 
         //Physics
         float maxVelocityX = 10;
-        float maxVelocityY = 10;
+        float maxVelocityY = 30;
         private PhysicsBody pB;
 
         //Animation
@@ -59,7 +59,7 @@ namespace Engine
             xMovement();
 
             pB.velocity.X = Math.Clamp(pB.velocity.X, -maxVelocityX, maxVelocityX);
-            pB.velocity.X = Math.Clamp(pB.velocity.X, -maxVelocityY, maxVelocityY);
+            pB.velocity.Y = Math.Clamp(pB.velocity.Y, -maxVelocityY, maxVelocityY);
         }
         void Inputs(float delta)
         {

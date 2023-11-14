@@ -26,11 +26,11 @@ namespace Engine
             AddComponent<PhysicsBody>(physicsBody);
 
             AddComponent<PlayerMovement>(new PlayerMovement());
-            
+
             Collider collider = new Collider
-            {
-                
-            };
+            (
+                false, 1, new int[1]
+            );
             AddComponent<Collider>(collider);
         }
     }

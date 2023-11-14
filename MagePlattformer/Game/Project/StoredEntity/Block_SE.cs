@@ -21,9 +21,9 @@ namespace Engine
             AddComponent<Sprite>(sprite);
 
             Collider collider = new Collider
-            {
-                
-            };
+            (
+                false, 1, new int[1]
+            );
             AddComponent<Collider>(collider);
         }
     }

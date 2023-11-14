@@ -10,9 +10,9 @@ namespace Engine
         {
             name = "GameManager";
 
-            EntityManager.SpawnEntity(new Player(), Vector2.Zero);
+            EntityManager.SpawnEntity(new Player(), new Vector2(0, -5));
 
-            EntityManager.SpawnEntity(new Block(), new Vector2(0,7), new Vector2(10,3));
+            EntityManager.SpawnEntity(new Block(), new Vector2(0, 7), new Vector2(11, 3));
         }
     }
 }
