@@ -39,9 +39,10 @@ public class PhysicsSystem : GameSystem
                             otherGameEntity.transform.size.X * otherCollider.size.X,
                             otherGameEntity.transform.size.Y * otherCollider.size.Y
                         );
-
+                        System.Console.WriteLine(Raylib.GetCollisionRec(colliderBox, otherColliderBox).Width + " " + Raylib.GetCollisionRec(colliderBox, otherColliderBox).Height);
                         if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox) && hasPhysics)
                         {
+                            System.Console.WriteLine("!!!");
                             UpdateCollision(collider, otherCollider, colliderBox, otherColliderBox, physicsBody);
                         }
                     }
@@ -66,37 +67,44 @@ public class PhysicsSystem : GameSystem
 
     void UpdateCollision(Collider collider, Collider otherCollider, Rectangle box, Rectangle otherBox, PhysicsBody physicsBody)
     {
+        if (physicsBody == null)
+        {
+            System.Console.WriteLine("Return");
+            return;
+        }
         if (collider.isTrigger || otherCollider.isTrigger)
         {
             collider.gameEntity.OnTrigger();
+            System.Console.WriteLine("Trigger");
             return;
         }
-        float xOverlap = Math.Min(box.x + box.width, otherBox.x + otherBox.width) - Math.Max(box.x, otherBox.x);
-        float yOverlap = Math.Min(box.y + box.height, otherBox.y + otherBox.height) - Math.Max(box.y, otherBox.y);
+        float xOverlap = Math.Min(box.X + box.Width, otherBox.X + otherBox.Width) - Math.Max(box.X, otherBox.X);
+        float yOverlap = Math.Min(box.Y + box.Height, otherBox.Y + otherBox.Height) - Math.Max(box.Y, otherBox.Y);
 
         if (xOverlap < yOverlap)
         {
-            if (box.x < otherBox.x)
+            if (box.X < otherBox.X)
             {
-                collider.gameEntity.transform.position.X = otherBox.x - box.width / 2;
+                collider.gameEntity.transform.position.X = otherBox.X - box.Width / 2;
             }
             else
             {
-                collider.gameEntity.transform.position.X = otherBox.x + otherBox.width + box.width / 2;
+                collider.gameEntity.transform.position.X = otherBox.X + otherBox.Width + box.Width / 2;
             }
             physicsBody.velocity.X *= -1 * physicsBody.elasticity;
         }
         else
         {
-            if (box.y < otherBox.y)
+            if (box.Y < otherBox.Y)
             {
-                collider.gameEntity.transform.position.Y = otherBox.y - box.height / 2;
+                collider.gameEntity.transform.position.Y = otherBox.Y - box.Height / 2;
             }
             else
             {
-                collider.gameEntity.transform.position.Y = otherBox.y + otherBox.height + box.height / 2;
+                collider.gameEntity.transform.position.Y = otherBox.Y + otherBox.Height + box.Height / 2;
             }
             physicsBody.velocity.Y *= -1 * physicsBody.elasticity;
         }
+        System.Console.WriteLine(xOverlap + " " + yOverlap);
     }
 }

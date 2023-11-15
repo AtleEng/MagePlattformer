@@ -8,13 +8,13 @@
     ".NETCoreApp,Version=v6.0": {
       "MagePlattformer/1.0.0": {
         "dependencies": {
-          "Raylib-cs": "4.5.0.4"
+          "Raylib-cs": "5.0.0"
         },
         "runtime": {
           "MagePlattformer.dll": {}
         }
       },
-      "Raylib-cs/4.5.0.4": {
+      "Raylib-cs/5.0.0": {
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         },
@@ -61,12 +61,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Raylib-cs/4.5.0.4": {
+    "Raylib-cs/5.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-soBZJzafgOMdlR3edjHLhN9pjIzosEQ0yZVRDUrOalDvtdc76Br2HaLiszEjCdJDIav7SATbURCkxvWB7Qv4qg==",
-      "path": "raylib-cs/4.5.0.4",
-      "hashPath": "raylib-cs.4.5.0.4.nupkg.sha512"
+      "sha512": "sha512-eVpVxfejtkLXVtJgEmM63SuIS+Qw/ooLLqbhSKjKTaBxnE0NuSp6YJQU9W69AsZheXWFvK7ZPgC8WcJdG23/WA==",
+      "path": "raylib-cs/5.0.0",
+      "hashPath": "raylib-cs.5.0.0.nupkg.sha512"
     },
     "System.Numerics.Vectors/4.5.0": {
       "type": "package",

@@ -51,8 +51,8 @@ namespace CoreEngine
             Raylib.BeginDrawing();
             Raylib.ClearBackground(new Color(69, 43, 63, 255));
 
-            Raylib.DrawTexturePro(target.texture,
-    new Rectangle(0.0f, 0.0f, (float)target.texture.width, (float)-target.texture.height),
+            Raylib.DrawTexturePro(target.Texture,
+    new Rectangle(0.0f, 0.0f, (float)target.Texture.Width, (float)-target.Texture.Height),
     new Rectangle(offsetX, offsetY, gameScreenWidth * scale, gameScreenHeight * scale),
     new Vector2(0, 0), 0.0f, Color.WHITE);
 
@@ -104,7 +104,7 @@ namespace CoreEngine
 
                 Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
 
-                if (sprite.spriteSheet.id != 0)
+                if (sprite.spriteSheet.Id != 0)
                 {
                     int flipX = sprite.isFlipedX ? -1 : 1;
                     int flipY = sprite.isFlipedY ? -1 : 1;
@@ -114,8 +114,8 @@ namespace CoreEngine
                     int x = (int)sprite.spriteGrid.X;
                     int y = (int)sprite.spriteGrid.Y;
 
-                    float gridSizeX = sprite.spriteSheet.width / x;
-                    float gridSizeY = sprite.spriteSheet.height / y;
+                    float gridSizeX = sprite.spriteSheet.Width / x;
+                    float gridSizeY = sprite.spriteSheet.Height / y;
 
                     int posX = i % x;
                     int posY = i / x;
@@ -123,8 +123,8 @@ namespace CoreEngine
                     Rectangle source = new Rectangle(
                         (int)(posX * gridSizeX),
                         (int)(posY * gridSizeY),
-                        sprite.spriteSheet.width * flipX / sprite.spriteGrid.X,
-                    sprite.spriteSheet.height * flipY / sprite.spriteGrid.Y
+                        sprite.spriteSheet.Width * flipX / sprite.spriteGrid.X,
+                    sprite.spriteSheet.Height * flipY / sprite.spriteGrid.Y
                     );
 
                     Raylib.DrawTexturePro(sprite.spriteSheet, source, destRec, Vector2.Zero, 0, sprite.colorTint);

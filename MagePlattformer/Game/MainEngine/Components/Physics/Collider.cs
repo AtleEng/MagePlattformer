@@ -9,7 +9,7 @@ namespace Physics
     public class Collider : Component
     {
         public Vector2 origin;
-        public Vector2 size;
+        public Vector2 size = Vector2.One;
         public bool isTrigger;
         public int layer;
         public int[] layersToCollideWith;

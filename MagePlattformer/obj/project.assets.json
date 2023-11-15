@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "Raylib-cs/4.5.0.4": {
+      "Raylib-cs/5.0.0": {
         "type": "package",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
@@ -52,10 +52,10 @@
     }
   },
   "libraries": {
-    "Raylib-cs/4.5.0.4": {
-      "sha512": "soBZJzafgOMdlR3edjHLhN9pjIzosEQ0yZVRDUrOalDvtdc76Br2HaLiszEjCdJDIav7SATbURCkxvWB7Qv4qg==",
+    "Raylib-cs/5.0.0": {
+      "sha512": "eVpVxfejtkLXVtJgEmM63SuIS+Qw/ooLLqbhSKjKTaBxnE0NuSp6YJQU9W69AsZheXWFvK7ZPgC8WcJdG23/WA==",
       "type": "package",
-      "path": "raylib-cs/4.5.0.4",
+      "path": "raylib-cs/5.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -64,7 +64,7 @@
         "lib/net5.0/Raylib-cs.xml",
         "lib/net6.0/Raylib-cs.dll",
         "lib/net6.0/Raylib-cs.xml",
-        "raylib-cs.4.5.0.4.nupkg.sha512",
+        "raylib-cs.5.0.0.nupkg.sha512",
         "raylib-cs.nuspec",
         "raylib-cs_64x64.png",
         "runtimes/linux-x64/native/libraylib.so",
@@ -124,23 +124,23 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Raylib-cs >= 4.5.0.4"
+      "Raylib-cs >= 5.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\atlee\\.nuget\\packages\\": {}
+    "C:\\Users\\atle.engelbrektsson\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\atlee\\Documents\\GameDev\\Projects\\MagePlattformer\\MagePlattformer\\MagePlattformer.csproj",
+      "projectUniqueName": "c:\\Users\\atle.engelbrektsson\\Documents\\C#\\MagePlattformer\\MagePlattformer\\MagePlattformer.csproj",
       "projectName": "MagePlattformer",
-      "projectPath": "C:\\Users\\atlee\\Documents\\GameDev\\Projects\\MagePlattformer\\MagePlattformer\\MagePlattformer.csproj",
-      "packagesPath": "C:\\Users\\atlee\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\atlee\\Documents\\GameDev\\Projects\\MagePlattformer\\MagePlattformer\\obj\\",
+      "projectPath": "c:\\Users\\atle.engelbrektsson\\Documents\\C#\\MagePlattformer\\MagePlattformer\\MagePlattformer.csproj",
+      "packagesPath": "C:\\Users\\atle.engelbrektsson\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\atle.engelbrektsson\\Documents\\C#\\MagePlattformer\\MagePlattformer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\atlee\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\atle.engelbrektsson\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -166,7 +166,7 @@
         "dependencies": {
           "Raylib-cs": {
             "target": "Package",
-            "version": "[4.5.0.4, )"
+            "version": "[5.0.0, )"
           }
         },
         "imports": [
@@ -185,7 +185,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.411\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.406\\RuntimeIdentifierGraph.json"
       }
     }
   }
