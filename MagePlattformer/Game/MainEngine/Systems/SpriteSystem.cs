@@ -81,59 +81,72 @@ namespace CoreEngine
                 Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
                 if (collider != null)
                 {
+                    Vector2 p = WorldSpace.ConvertToCameraPosition(gameEntity.worldTransform.position + collider.origin);
+                    Vector2 s = WorldSpace.ConvertToCameraSize(gameEntity.worldTransform.size * collider.size);
+
                     Rectangle colliderBox = new Rectangle(
-                    gameEntity.transform.position.X + collider.origin.X - collider.gameEntity.transform.size.X * collider.size.X / 2,
-                    gameEntity.transform.position.Y + collider.origin.Y - collider.gameEntity.transform.size.Y * collider.size.Y / 2,
-                    gameEntity.transform.size.X * collider.size.X,
-                    gameEntity.transform.size.Y * collider.size.Y
+                    (int)p.X - (int)(s.X / 2), (int)p.Y - (int)(s.Y / 2), //pos
+                    (int)s.X, (int)s.Y //size
                     );
-                    Raylib.DrawRectangleRec(colliderBox, new Color(55, 255, 55, 100));
+                    Color color = new Color(55, 255, 55, 200);
+                    if (collider.isTrigger)
+                    {
+                        color = new Color(55, 55, 255, 200);
+                        if (collider.isColliding)
+                        {
+                            color = new Color(255, 55, 255, 200);
+                        }
+
+                    }
+                    else if (collider.isColliding) { color = new Color(255, 55, 55, 200); }
+
+                    Raylib.DrawRectangleRec(colliderBox, color);
                 }
-            }
-            allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
+                allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
-            foreach (Sprite sprite in allSprites)
-            {
-                Vector2 p = WorldSpace.ConvertToCameraPosition(sprite.gameEntity.worldTransform.position);
-                Vector2 s = WorldSpace.ConvertToCameraSize(sprite.gameEntity.worldTransform.size);
-
-                Rectangle destRec = new Rectangle(
-                (int)p.X - (int)(s.X / 2), (int)p.Y - (int)(s.Y / 2), //pos
-                (int)s.X, (int)s.Y //size
-                );
-
-                Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
-
-                if (sprite.spriteSheet.Id != 0)
+                foreach (Sprite sprite in allSprites)
                 {
-                    int flipX = sprite.isFlipedX ? -1 : 1;
-                    int flipY = sprite.isFlipedY ? -1 : 1;
+                    Vector2 p = WorldSpace.ConvertToCameraPosition(sprite.gameEntity.worldTransform.position);
+                    Vector2 s = WorldSpace.ConvertToCameraSize(sprite.gameEntity.worldTransform.size);
 
-                    int i = sprite.FrameIndex;
-
-                    int x = (int)sprite.spriteGrid.X;
-                    int y = (int)sprite.spriteGrid.Y;
-
-                    float gridSizeX = sprite.spriteSheet.Width / x;
-                    float gridSizeY = sprite.spriteSheet.Height / y;
-
-                    int posX = i % x;
-                    int posY = i / x;
-
-                    Rectangle source = new Rectangle(
-                        (int)(posX * gridSizeX),
-                        (int)(posY * gridSizeY),
-                        sprite.spriteSheet.Width * flipX / sprite.spriteGrid.X,
-                    sprite.spriteSheet.Height * flipY / sprite.spriteGrid.Y
+                    Rectangle destRec = new Rectangle(
+                    (int)p.X - (int)(s.X / 2), (int)p.Y - (int)(s.Y / 2), //pos
+                    (int)s.X, (int)s.Y //size
                     );
 
-                    Raylib.DrawTexturePro(sprite.spriteSheet, source, destRec, Vector2.Zero, 0, sprite.colorTint);
-                }
-                Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
-            }
+                    //Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
 
-            DisplayGrid();
-            Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
+                    if (sprite.spriteSheet.Id != 0)
+                    {
+                        int flipX = sprite.isFlipedX ? -1 : 1;
+                        int flipY = sprite.isFlipedY ? -1 : 1;
+
+                        int i = sprite.FrameIndex;
+
+                        int x = (int)sprite.spriteGrid.X;
+                        int y = (int)sprite.spriteGrid.Y;
+
+                        float gridSizeX = sprite.spriteSheet.Width / x;
+                        float gridSizeY = sprite.spriteSheet.Height / y;
+
+                        int posX = i % x;
+                        int posY = i / x;
+
+                        Rectangle source = new Rectangle(
+                            (int)(posX * gridSizeX),
+                            (int)(posY * gridSizeY),
+                            sprite.spriteSheet.Width * flipX / sprite.spriteGrid.X,
+                        sprite.spriteSheet.Height * flipY / sprite.spriteGrid.Y
+                        );
+
+                        Raylib.DrawTexturePro(sprite.spriteSheet, source, destRec, Vector2.Zero, 0, sprite.colorTint);
+                    }
+                    Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
+                }
+
+                DisplayGrid();
+                Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
+            }
         }
         void SetValuesOfWindow()
         {
@@ -161,7 +174,7 @@ namespace CoreEngine
 
         void DisplayGrid()
         {
-            int gridSize = 20;
+            int gridSize = 100;
             Vector2 spX = WorldSpace.ConvertToCameraPosition(new Vector2(gridSize, 0));
 
             Vector2 epX = WorldSpace.ConvertToCameraPosition(new Vector2(-gridSize, 0));
@@ -189,3 +202,4 @@ namespace CoreEngine
         }
     }
 }
+

@@ -10,9 +10,13 @@ namespace Physics
     {
         public Vector2 origin;
         public Vector2 size = Vector2.One;
+
         public bool isTrigger;
+
         public int layer;
         public int[] layersToCollideWith;
+
+        public bool isColliding;
         public Collider(bool isTrigger, int layer, int[] layersToCollideWith)
         {
             this.isTrigger = isTrigger;

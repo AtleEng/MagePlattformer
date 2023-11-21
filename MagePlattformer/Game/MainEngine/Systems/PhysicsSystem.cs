@@ -21,11 +21,13 @@ public class PhysicsSystem : GameSystem
             Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
             if (collider != null)
             {
+                collider.isColliding = false;
+
                 Rectangle colliderBox = new Rectangle(
-                gameEntity.transform.position.X + collider.origin.X - collider.gameEntity.transform.size.X * collider.size.X / 2,
-                gameEntity.transform.position.Y + collider.origin.Y - collider.gameEntity.transform.size.Y * collider.size.Y / 2,
-                gameEntity.transform.size.X * collider.size.X,
-                gameEntity.transform.size.Y * collider.size.Y
+                gameEntity.worldTransform.position.X + collider.origin.X - collider.gameEntity.worldTransform.size.X * collider.size.X / 2,
+                gameEntity.worldTransform.position.Y + collider.origin.Y - collider.gameEntity.worldTransform.size.Y * collider.size.Y / 2,
+                gameEntity.worldTransform.size.X * collider.size.X,
+                gameEntity.worldTransform.size.Y * collider.size.Y
                 );
 
                 foreach (GameEntity otherGameEntity in Core.activeGameEntities)
@@ -34,16 +36,23 @@ public class PhysicsSystem : GameSystem
                     if (otherCollider != null && otherCollider != collider)
                     {
                         Rectangle otherColliderBox = new Rectangle(
-                            otherGameEntity.transform.position.X + otherCollider.origin.X - otherGameEntity.transform.size.X * otherCollider.size.X / 2,
-                            otherGameEntity.transform.position.Y + otherCollider.origin.Y - otherGameEntity.transform.size.Y * otherCollider.size.Y / 2,
-                            otherGameEntity.transform.size.X * otherCollider.size.X,
-                            otherGameEntity.transform.size.Y * otherCollider.size.Y
+                            otherGameEntity.worldTransform.position.X + otherCollider.origin.X - otherGameEntity.worldTransform.size.X * otherCollider.size.X / 2,
+                            otherGameEntity.worldTransform.position.Y + otherCollider.origin.Y - otherGameEntity.worldTransform.size.Y * otherCollider.size.Y / 2,
+                            otherGameEntity.worldTransform.size.X * otherCollider.size.X,
+                            otherGameEntity.worldTransform.size.Y * otherCollider.size.Y
                         );
-                        System.Console.WriteLine(Raylib.GetCollisionRec(colliderBox, otherColliderBox).Width + " " + Raylib.GetCollisionRec(colliderBox, otherColliderBox).Height);
-                        if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox) && hasPhysics)
+                        if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox))
                         {
-                            System.Console.WriteLine("!!!");
-                            UpdateCollision(collider, otherCollider, colliderBox, otherColliderBox, physicsBody);
+                            collider.isColliding = true;
+                            if (collider.isTrigger)
+                            {
+                                collider.gameEntity.OnTrigger();
+                                System.Console.WriteLine("Trigger");
+                            }
+                            else if (hasPhysics && !otherCollider.isTrigger)
+                            {
+                                UpdateCollision(collider, otherCollider, colliderBox, otherColliderBox, physicsBody);
+                            }
                         }
                     }
                 }
@@ -69,13 +78,6 @@ public class PhysicsSystem : GameSystem
     {
         if (physicsBody == null)
         {
-            System.Console.WriteLine("Return");
-            return;
-        }
-        if (collider.isTrigger || otherCollider.isTrigger)
-        {
-            collider.gameEntity.OnTrigger();
-            System.Console.WriteLine("Trigger");
             return;
         }
         float xOverlap = Math.Min(box.X + box.Width, otherBox.X + otherBox.Width) - Math.Max(box.X, otherBox.X);
@@ -105,6 +107,5 @@ public class PhysicsSystem : GameSystem
             }
             physicsBody.velocity.Y *= -1 * physicsBody.elasticity;
         }
-        System.Console.WriteLine(xOverlap + " " + yOverlap);
     }
 }

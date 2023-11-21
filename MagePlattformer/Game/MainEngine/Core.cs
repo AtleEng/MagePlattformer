@@ -27,7 +27,6 @@ namespace CoreEngine
         static float newTime = 0;
 
         public static double physicsUpdateTimeStep = 0.1; // 0.1 seconds
-        static double physicsTimer = 0;
         public static void Start()
         {
             AddSystem(new ScriptSystem());
@@ -64,7 +63,6 @@ namespace CoreEngine
                 system.Update(delta);
             }
             UpdateChildren(currentScene);
-
             // Add and remove games entities
             foreach (var entity in entitiesToAdd)
             {

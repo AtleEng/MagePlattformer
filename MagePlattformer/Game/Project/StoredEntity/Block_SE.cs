@@ -22,7 +22,7 @@ namespace Engine
 
             Collider collider = new Collider
             (
-                false, 1, new int[1]
+                false, 1, new int[0]
             );
             AddComponent<Collider>(collider);
         }

@@ -31,6 +31,7 @@ namespace CoreAnimation
             if (animations.ContainsKey(name))
             {
                 isPlaying = true;
+                sprite.FrameIndex = animations[name].Frames[0];
                 currentAnimation = name;
                 currentFrame = 0;
                 timer = 0;

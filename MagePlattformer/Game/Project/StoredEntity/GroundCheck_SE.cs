@@ -11,13 +11,12 @@ namespace Engine
         {
             name = "GroundCheck";
 
-            AddComponent<PlayerMovement>(new PlayerMovement());
-
-            Collider collider = new Collider
+            Collider collider = new
             (
-                false, 1, new int[1]
+                true, 3, new int[1]
             );
             AddComponent<Collider>(collider);
+            AddComponent<Sprite>(new Sprite());
         }
     }
 }

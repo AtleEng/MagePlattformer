@@ -14,7 +14,7 @@ namespace Engine
         private float moveInput;
 
         //Normal jumping
-        private float jumpForce = 20;
+        private float jumpForce = 10;
 
         private float jumpTime = 0.3f;
         private float jumpTimeCounter;
@@ -28,11 +28,9 @@ namespace Engine
         private float jumpBufferLengthCounter;
 
         //isGrounded
-        private Transform feetPos;
+        public Transform feetPos;
 
-        private float checkRadius;
-
-        //private LayerMask whatIsGround;
+        public Collider groundCheck;
         private bool isGrounded = true;
 
         //Physics
@@ -42,6 +40,8 @@ namespace Engine
 
         //Animation
         private Animator anim;
+        PlayerStates playerStates = PlayerStates.idle;
+
 
         public override void Start()
         {
@@ -50,6 +50,22 @@ namespace Engine
         }
         public override void Update(float delta)
         {
+            if (playerStates == PlayerStates.idle)
+            {
+                if (pB.velocity.X != 0)
+                {
+                    playerStates = PlayerStates.running;
+                    anim.PlayAnimation("Run");
+                }
+            }
+            else if (playerStates == PlayerStates.running)
+            {
+                if (pB.velocity.X == 0)
+                {
+                    playerStates = PlayerStates.idle;
+                    anim.PlayAnimation("Idle");
+                }
+            }
             Inputs(delta);
             CheckWorld();
 
@@ -63,6 +79,12 @@ namespace Engine
         }
         void Inputs(float delta)
         {
+            //manage jump buffer
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+            {
+                pB.velocity = Vector2.Zero;
+                gameEntity.transform.position = Vector2.Zero;
+            }
             //manage hangtime
             if (isGrounded)
             {
@@ -110,7 +132,7 @@ namespace Engine
         }
         void CheckWorld()
         {
-            //isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+            //isGrounded = groundCheck.isColliding;
         }
         void xMovement()
         {
@@ -142,6 +164,10 @@ namespace Engine
             {
                 pB.velocity = new Vector2(0, -1) * jumpForce;
             }
+        }
+        public enum PlayerStates
+        {
+            idle, running, jump, fall, landing, shooting
         }
     }
 }
