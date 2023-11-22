@@ -39,7 +39,7 @@ namespace Engine
         }
         public string PrintStats()
         {
-            return $"IsActive:{isActive} Position:{worldTransform.position} Size:{worldTransform.size}";
+            return $"isActive: {isActive}- -transform:{worldTransform.position},{worldTransform.size}-";
         }
         public bool HasComponent<T>()
         {

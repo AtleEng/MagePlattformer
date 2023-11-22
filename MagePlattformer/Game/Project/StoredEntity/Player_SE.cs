@@ -14,7 +14,7 @@ namespace Engine
 
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\Game\Project\Sprites\PlayerSpriteSheet.png"),
+                spriteSheet = Raylib.LoadTexture(@"C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\Game\Project\Sprites\PlayerSpriteSheet.png"),
                 spriteGrid = new Vector2(4, 2),
                 FrameIndex = 4
             };
@@ -41,7 +41,10 @@ namespace Engine
             Collider collider = new Collider
             (
                 false, 0, new int[1]
-            );
+            )
+            {
+                size = new Vector2(0.75f, 1)
+            };
             AddComponent<Collider>(collider);
 
             GroundCheck groundCheck = new();

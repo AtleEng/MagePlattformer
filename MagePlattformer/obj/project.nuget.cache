@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "XpSF1HpWuyh6KJkxTjX8mfdH+sDsAMXyX66QAj/7OH59hudjA8U/95V2TYJ9T72H/scjRD0ZSUez4yd56+kEcQ==",
+  "dgSpecHash": "nzQ+D1p/rklrCAscPCZYkHe4wYtI3gtduFx++EuyqYgQfAGmLX4B1cn/dyDIaoBKQBvO8EYkvftaG/ZBfeVJsg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\atle.engelbrektsson\\Documents\\C#\\MagePlattformer\\MagePlattformer\\MagePlattformer.csproj",
+  "projectFilePath": "C:\\Users\\atlee\\Documents\\GameDev\\Projects\\MagePlattformer\\MagePlattformer\\MagePlattformer.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\atle.engelbrektsson\\.nuget\\packages\\raylib-cs\\5.0.0\\raylib-cs.5.0.0.nupkg.sha512",
-    "C:\\Users\\atle.engelbrektsson\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
+    "C:\\Users\\atlee\\.nuget\\packages\\raylib-cs\\5.0.0\\raylib-cs.5.0.0.nupkg.sha512",
+    "C:\\Users\\atlee\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

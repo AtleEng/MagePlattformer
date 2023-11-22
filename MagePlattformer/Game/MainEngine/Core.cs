@@ -86,7 +86,7 @@ namespace CoreEngine
             }
         }
 
-        static void UpdateChildren(GameEntity parent)
+        static public void UpdateChildren(GameEntity parent)
         {
             foreach (var child in parent.children)
             {
