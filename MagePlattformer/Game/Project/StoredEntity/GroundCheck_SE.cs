@@ -13,7 +13,7 @@ namespace Engine
 
             Collider collider = new
             (
-                true, 3, new int[1]
+                true, 2
             );
             AddComponent<Collider>(collider);
             AddComponent<Sprite>(new Sprite());

@@ -14,14 +14,12 @@ namespace Physics
         public bool isTrigger;
 
         public int layer;
-        public int[] layersToCollideWith;
 
         public bool isColliding;
-        public Collider(bool isTrigger, int layer, int[] layersToCollideWith)
+        public Collider(bool isTrigger, int layer)
         {
             this.isTrigger = isTrigger;
             this.layer = layer;
-            this.layersToCollideWith = layersToCollideWith;
         }
     }
 

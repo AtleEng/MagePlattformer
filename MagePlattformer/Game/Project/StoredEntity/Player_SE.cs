@@ -40,7 +40,7 @@ namespace Engine
 
             Collider collider = new Collider
             (
-                false, 0, new int[1]
+                false, 0
             )
             {
                 size = new Vector2(0.75f, 1)

@@ -132,7 +132,7 @@ namespace Engine
         }
         void CheckWorld()
         {
-            //isGrounded = groundCheck.isColliding;
+            isGrounded = groundCheck.isColliding;
         }
         void xMovement()
         {
