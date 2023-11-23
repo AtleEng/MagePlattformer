@@ -10,7 +10,7 @@ namespace Engine
     public class PlayerMovement : Component, IScript
     {
         //X Movement
-        private float moveSpeed = 30;
+        private float moveSpeed = 100;
         private float moveInput;
 
         //Normal jumping
@@ -88,14 +88,15 @@ namespace Engine
                     }
                 }
             }
+
             Inputs(delta);
             CheckWorld();
-
-            Flip();
+            //Flip();
 
             Jump();
-            xMovement();
+            xMovement(delta);
 
+            if(Math.Abs(pB.velocity.X) < 1){pB.velocity.X = 0;}
             pB.velocity.X = Math.Clamp(pB.velocity.X, -maxVelocityX, maxVelocityX);
             pB.velocity.Y = Math.Clamp(pB.velocity.Y, -maxVelocityY, maxVelocityY);
         }
@@ -156,8 +157,9 @@ namespace Engine
         {
             isGrounded = groundCheck.isColliding;
         }
-        void xMovement()
+        void xMovement(float delta)
         {
+            moveInput = 0;
             if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
             {
                 moveInput++;
@@ -166,25 +168,26 @@ namespace Engine
             {
                 moveInput--;
             }
-            pB.velocity = new Vector2(moveInput * moveSpeed, pB.velocity.Y);
-            moveInput = 0;
+            pB.velocity.X += moveInput * moveSpeed * delta;
         }
         void Flip()
         {
             if (moveInput > 0)
             {
-
+                System.Console.WriteLine("r");
+                gameEntity.transform.size.X = 1;
             }
             else if (moveInput < 0)
             {
-
+                System.Console.WriteLine("l");
+                gameEntity.transform.size.X = -1;
             }
         }
         void Jump()
         {
             if (isJumping)
             {
-                pB.velocity = new Vector2(0, -1) * jumpForce;
+                pB.velocity.Y = -jumpForce;
             }
         }
         public enum PlayerStates

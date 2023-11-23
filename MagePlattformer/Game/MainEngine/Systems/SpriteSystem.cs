@@ -78,6 +78,7 @@ namespace CoreEngine
                 Sprite? spriteComponent = gameEntity.components.ContainsKey(typeof(Sprite)) ? gameEntity.components[typeof(Sprite)] as Sprite : null;
                 if (spriteComponent != null) { allSprites.Add(spriteComponent); }
 
+                
                 Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
                 if (collider != null)
                 {
@@ -102,6 +103,7 @@ namespace CoreEngine
 
                     Raylib.DrawRectangleRec(colliderBox, color);
                 }
+                
                 allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
                 foreach (Sprite sprite in allSprites)

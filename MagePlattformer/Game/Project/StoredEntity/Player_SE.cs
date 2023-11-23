@@ -32,7 +32,7 @@ namespace Engine
 
             Animation fallAnimation = new(new int[] { 7, }, 0.1f, false);
             animator.AddAnimation("Fall", fallAnimation);
-            
+
             Animation jumpAnimation = new(new int[] {3}, 0.1f, false);
             animator.AddAnimation("Jump", jumpAnimation);
 
@@ -41,7 +41,7 @@ namespace Engine
             //physics
             PhysicsBody physicsBody = new PhysicsBody
             {
-                dragX = 0.3f,
+                dragX = 10f,
                 dragY = 0,
                 Gravity = new Vector2(0, 50),
                 velocity = Vector2.Zero
