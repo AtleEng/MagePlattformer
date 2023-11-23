@@ -50,20 +50,42 @@ namespace Engine
         }
         public override void Update(float delta)
         {
-            if (playerStates == PlayerStates.idle)
+            if (isGrounded)
             {
                 if (pB.velocity.X != 0)
                 {
-                    playerStates = PlayerStates.running;
-                    anim.PlayAnimation("Run");
+                    if (playerStates != PlayerStates.running)
+                    {
+                        playerStates = PlayerStates.running;
+                        anim.PlayAnimation("Run");
+                    }
+                }
+                else
+                {
+                    if (playerStates != PlayerStates.idle)
+                    {
+                        playerStates = PlayerStates.idle;
+                        anim.PlayAnimation("Idle");
+                    }
                 }
             }
-            else if (playerStates == PlayerStates.running)
+            else
             {
-                if (pB.velocity.X == 0)
+                if (pB.velocity.Y < 0)
                 {
-                    playerStates = PlayerStates.idle;
-                    anim.PlayAnimation("Idle");
+                    if (playerStates != PlayerStates.jump)
+                    {
+                        playerStates = PlayerStates.jump;
+                        anim.PlayAnimation("Jump");
+                    }
+                }
+                else
+                {
+                    if (playerStates != PlayerStates.fall)
+                    {
+                        playerStates = PlayerStates.fall;
+                        anim.PlayAnimation("Fall");
+                    }
                 }
             }
             Inputs(delta);
