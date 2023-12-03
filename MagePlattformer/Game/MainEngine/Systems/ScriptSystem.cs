@@ -10,7 +10,7 @@ namespace CoreEngine
         {
             foreach (GameEntity gameEntity in Core.activeGameEntities)
             {
-                foreach (Component component in gameEntity.components.Values)
+                foreach (Component component in gameEntity.components)
                 {
                     if (component is IScript)
                     {
@@ -23,7 +23,7 @@ namespace CoreEngine
         {
             foreach (GameEntity gameEntity in Core.gameEntities)
             {
-                foreach (Component component in gameEntity.components.Values)
+                foreach (Component component in gameEntity.components)
                 {
                     if (component is IScript)
                     {

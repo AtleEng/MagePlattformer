@@ -75,11 +75,11 @@ namespace CoreEngine
 
             foreach (GameEntity gameEntity in Core.activeGameEntities)
             {
-                Sprite? spriteComponent = gameEntity.components.ContainsKey(typeof(Sprite)) ? gameEntity.components[typeof(Sprite)] as Sprite : null;
+                Sprite? spriteComponent = gameEntity.GetComponent<Sprite>();
                 if (spriteComponent != null) { allSprites.Add(spriteComponent); }
 
-                
-                Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
+
+                Collider? collider = gameEntity.GetComponent<Collider>();
                 if (collider != null)
                 {
                     Vector2 p = WorldSpace.ConvertToCameraPosition(gameEntity.worldTransform.position + collider.origin);
@@ -103,7 +103,7 @@ namespace CoreEngine
 
                     Raylib.DrawRectangleRec(colliderBox, color);
                 }
-                
+
                 allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
                 foreach (Sprite sprite in allSprites)

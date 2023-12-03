@@ -4,10 +4,13 @@ using Raylib_cs;
 using CoreEngine;
 using Engine;
 
-namespace CoreAnimation
+namespace Animation
 {
+    [Serializable]
     public class Animator : Component
     {
+        public Animator() { }
+
         public Sprite sprite;
         public Dictionary<string, Animation> animations;
         public string currentAnimation = "";

@@ -6,8 +6,11 @@ using Engine;
 
 namespace Engine
 {
+    [Serializable]
     public class Sprite : Component
     {
+        public Sprite() { }
+
         public Texture2D spriteSheet;
         public Vector2 spriteGrid = Vector2.One;
         int frameIndex;

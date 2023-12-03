@@ -27,7 +27,7 @@ namespace Engine
             entity.parent.children.Add(entity);
 
             entity.OnInnit();
-            foreach (Component component in entity.components.Values)
+            foreach (Component component in entity.components)
             {
                 component.Start();
             }
@@ -36,7 +36,7 @@ namespace Engine
 
         public static void DestroyEntity(GameEntity entity)
         {
-            foreach (Component component in entity.components.Values)
+            foreach (Component component in entity.components)
             {
                 component.OnDestroy();
             }

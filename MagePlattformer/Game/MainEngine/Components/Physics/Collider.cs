@@ -6,8 +6,11 @@ using Engine;
 
 namespace Physics
 {
+    [Serializable]
     public class Collider : Component
     {
+        public Collider() { }
+
         public Vector2 origin;
         public Vector2 size = Vector2.One;
 

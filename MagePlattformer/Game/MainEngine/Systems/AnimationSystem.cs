@@ -2,7 +2,7 @@ using System.Numerics;
 using CoreEngine;
 using Engine;
 
-namespace CoreAnimation
+namespace Animation
 {
     public class AnimationSystem : GameSystem
     {
@@ -10,12 +10,11 @@ namespace CoreAnimation
         {
             foreach (GameEntity gameEntity in Core.activeGameEntities)
             {
-                Animator? animator = gameEntity.components.ContainsKey(typeof(Animator)) ? gameEntity.components[typeof(Animator)] as Animator : null;
+                Animator? animator = gameEntity.GetComponent<Animator>();
                 if (animator != null)
                 {
                     if (animator.currentAnimation != null && animator.animations.ContainsKey(animator.currentAnimation) && animator.isPlaying)
                     {
-
                         animator.timer += delta;
                         if (animator.timer >= animator.animations[animator.currentAnimation].FrameDuration)
                         {

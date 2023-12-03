@@ -4,7 +4,7 @@ using System.IO;
 using Raylib_cs;
 using CoreEngine;
 using Engine;
-using CoreAnimation;
+using Animation;
 using Physics;
 
 
@@ -114,7 +114,7 @@ namespace CoreEngine
             // Components
             if (entity.components.Count > 0)
             {
-                foreach (Component component in entity.components.Values)
+                foreach (Component component in entity.components)
                 {
                     Console.WriteLine($"   {space}{component.GetType().Name} [{component.PrintStats()}]");
                 }

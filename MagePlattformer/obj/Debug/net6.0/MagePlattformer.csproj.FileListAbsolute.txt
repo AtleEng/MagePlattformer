@@ -42,3 +42,6 @@ C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\De
 C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\Debug\net6.0\MagePlattformer.pdb
 C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\Debug\net6.0\MagePlattformer.genruntimeconfig.cache
 C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\Debug\net6.0\ref\MagePlattformer.dll
+c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\BlocksSpriteSheet.png
+c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\PlayerSpriteSheet.png
+c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\JumpPad.png

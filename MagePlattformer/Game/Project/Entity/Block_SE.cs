@@ -14,9 +14,9 @@ namespace Engine
 
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\Game\Project\Sprites\simple.png"),
-                spriteGrid = new Vector2(2, 2),
-                FrameIndex = 2
+                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\BlocksSpriteSheet.png"),
+                spriteGrid = new Vector2(4, 4),
+                FrameIndex = 15
             };
             AddComponent<Sprite>(sprite);
 

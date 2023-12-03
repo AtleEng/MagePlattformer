@@ -6,8 +6,12 @@ using Engine;
 
 namespace Physics
 {
+    [Serializable]
     public class PhysicsBody : Component
     {
+        public PhysicsBody() { }
+
+        public PhysicsType physicsType = PhysicsType.dynamicType;
         public float mass = 1;
         public Vector2 velocity = Vector2.Zero;
         public Vector2 acceleration = Vector2.Zero;
@@ -27,6 +31,11 @@ namespace Physics
         public override string PrintStats()
         {
             return $"Velocity: {velocity}";
+        }
+
+        public enum PhysicsType
+        {
+            dynamicType, staticType
         }
     }
 }

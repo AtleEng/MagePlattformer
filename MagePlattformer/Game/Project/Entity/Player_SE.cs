@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Collections.Generic;
 using Raylib_cs;
-using CoreAnimation;
+using Animation;
 using Physics;
 
 namespace Engine
@@ -15,7 +15,7 @@ namespace Engine
             //sprite
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\Game\Project\Sprites\PlayerSpriteSheet.png"),
+                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\PlayerSpriteSheet.png"),
                 spriteGrid = new Vector2(4, 2),
                 FrameIndex = 4
             };
@@ -24,17 +24,10 @@ namespace Engine
             //animation
             Animator animator = new(sprite);
 
-            Animation idleAnimation = new(new int[] { 4, 5 }, 0.5f, true);
-            animator.AddAnimation("Idle", idleAnimation);
-
-            Animation runAnimation = new(new int[] { 0, 1, 2, 3 }, 0.1f, true);
-            animator.AddAnimation("Run", runAnimation);
-
-            Animation fallAnimation = new(new int[] { 7, }, 0.1f, false);
-            animator.AddAnimation("Fall", fallAnimation);
-
-            Animation jumpAnimation = new(new int[] {3}, 0.1f, false);
-            animator.AddAnimation("Jump", jumpAnimation);
+            animator.AddAnimation("Idle", new(new int[] { 4, 5 }, 0.5f, true));
+            animator.AddAnimation("Run", new(new int[] { 0, 1, 2, 3 }, 0.1f, true));
+            animator.AddAnimation("Fall", new(new int[] { 6, }, 0.1f, false));
+            animator.AddAnimation("Jump", new(new int[] { 3 }, 0.1f, false));
 
             AddComponent<Animator>(animator);
 
@@ -53,7 +46,7 @@ namespace Engine
                 false, 0
             )
             {
-                size = new Vector2(0.75f, 1)
+                size = new Vector2(0.5f, 1)
             };
             AddComponent<Collider>(collider);
 
@@ -62,9 +55,9 @@ namespace Engine
             AddComponent<PlayerMovement>(playerMovement);
 
             //ground check (child of player)
-            GroundCheck groundCheck = new();
-            EntityManager.SpawnEntity(groundCheck, new Vector2(0, 0.4f), new Vector2(0.5f, 0.5f), this);
-            playerMovement.groundCheck = groundCheck.GetComponent<Collider>();
+            Check check = new(2);
+            EntityManager.SpawnEntity(check, new Vector2(0, 0.4f), new Vector2(0.5f, 0.5f), this);
+            playerMovement.groundCheck = check.GetComponent<Collider>();
         }
     }
 }

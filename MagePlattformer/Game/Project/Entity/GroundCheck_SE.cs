@@ -5,15 +5,19 @@ using Physics;
 
 namespace Engine
 {
-    public class GroundCheck : GameEntity
+    public class Check : GameEntity
     {
-        public GroundCheck()
+        public Check() : this(0)
         {
-            name = "GroundCheck";
+
+        }
+        public Check(int colliderLayer)
+        {
+            name = "Check";
 
             Collider collider = new
             (
-                true, 2
+                true, colliderLayer
             );
             AddComponent<Collider>(collider);
             AddComponent<Sprite>(new Sprite());

@@ -1,0 +1,30 @@
+{
+  "name": "Player",
+  "isActive": true,
+  "transform": {
+    "position": {},
+    "size": {}
+  },
+  "components": [
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "children": [
+    {
+      "name": "GroundCheck",
+      "isActive": true,
+      "transform": {
+        "position": {},
+        "size": {}
+      },
+      "components": [
+        {},
+        {}
+      ],
+      "children": []
+    }
+  ]
+}

@@ -9,15 +9,16 @@ namespace Physics
     {
         public override void Update(float delta)
         {
+            if (Raylib.IsWindowResized()) { return; }
             foreach (GameEntity gameEntity in Core.activeGameEntities)
             {
-                PhysicsBody? physicsBody = gameEntity.components.ContainsKey(typeof(PhysicsBody)) ? gameEntity.components[typeof(PhysicsBody)] as PhysicsBody : null;
+                PhysicsBody? physicsBody = gameEntity.GetComponent<PhysicsBody>();
                 if (physicsBody != null)
                 {
                     UpdatePhysics(physicsBody, delta);
 
                 }
-                Collider? collider = gameEntity.components.ContainsKey(typeof(Collider)) ? gameEntity.components[typeof(Collider)] as Collider : null;
+                Collider? collider = gameEntity.GetComponent<Collider>();
                 if (collider != null)
                 {
                     CheckCollision(gameEntity, collider, physicsBody);
@@ -26,6 +27,7 @@ namespace Physics
         }
         void UpdatePhysics(PhysicsBody physicsBody, float delta)
         {
+            if (physicsBody.physicsType == PhysicsBody.PhysicsType.staticType) { return; }
             // Apply drag separately to X and Y
             physicsBody.velocity.X *= 1 - physicsBody.dragX * delta;
             physicsBody.velocity.Y *= 1 - physicsBody.dragY * delta;
@@ -53,7 +55,7 @@ namespace Physics
 
             foreach (GameEntity otherGameEntity in Core.activeGameEntities)
             {
-                Collider? otherCollider = otherGameEntity.components.ContainsKey(typeof(Collider)) ? otherGameEntity.components[typeof(Collider)] as Collider : null;
+                Collider? otherCollider = otherGameEntity.GetComponent<Collider>();
                 if (otherCollider != null && otherCollider != collider)
                 {
                     try
@@ -80,8 +82,7 @@ namespace Physics
                             collider.isColliding = true;
                             if (collider.isTrigger)
                             {
-                                collider.gameEntity.OnTrigger();
-                                System.Console.WriteLine("Trigger");
+                                collider.gameEntity.OnTrigger(otherCollider);
                             }
                             else if (physicsBody != null && !otherCollider.isTrigger)
                             {
@@ -103,11 +104,11 @@ namespace Physics
 
                 if (box.X < otherBox.X)
                 {
-                    collider.gameEntity.transform.position.X = otherBox.X - box.Width / 2;
+                    collider.gameEntity.transform.position = new Vector2(otherBox.X - box.Width / 2, collider.gameEntity.transform.position.Y);
                 }
                 else
                 {
-                    collider.gameEntity.transform.position.X = otherBox.X + otherBox.Width + box.Width / 2;
+                    collider.gameEntity.transform.position = new Vector2(otherBox.X + otherBox.Width + box.Width / 2, collider.gameEntity.transform.position.Y);
                 }
 
                 // Adjust position before inverting velocity
@@ -119,11 +120,11 @@ namespace Physics
 
                 if (box.Y < otherBox.Y)
                 {
-                    collider.gameEntity.transform.position.Y = otherBox.Y - box.Height / 2;
+                    collider.gameEntity.transform.position = new Vector2(collider.gameEntity.transform.position.X, otherBox.Y - box.Height / 2);
                 }
                 else
                 {
-                    collider.gameEntity.transform.position.Y = otherBox.Y + otherBox.Height + box.Height / 2;
+                    collider.gameEntity.transform.position = new Vector2(collider.gameEntity.transform.position.X, otherBox.Y + otherBox.Height + box.Height / 2);
                 }
 
                 // Adjust position before inverting velocity
@@ -140,7 +141,7 @@ namespace Physics
             //player ground check
             { true, true, false},
             { true, true, true},
-            { false, true, true}
+            { false, true, false}
         };
     }
 }

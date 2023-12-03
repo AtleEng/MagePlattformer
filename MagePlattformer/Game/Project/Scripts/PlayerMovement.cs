@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using Raylib_cs;
 using Engine;
 using Physics;
-using CoreAnimation;
+using Animation;
 
 namespace Engine
 {
+    [Serializable]
     public class PlayerMovement : Component, IScript
     {
+        public PlayerMovement() { }
+
         //X Movement
         private float moveSpeed = 100;
         private float moveInput;
@@ -36,10 +39,11 @@ namespace Engine
         //Physics
         float maxVelocityX = 10;
         float maxVelocityY = 30;
-        private PhysicsBody pB;
+        public PhysicsBody pB;
 
-        //Animation
-        private Animator anim;
+        //Sprite & Animation
+        Sprite sprite;
+        Animator anim;
         PlayerStates playerStates = PlayerStates.idle;
 
 
@@ -47,6 +51,7 @@ namespace Engine
         {
             pB = gameEntity.GetComponent<PhysicsBody>();
             anim = gameEntity.GetComponent<Animator>();
+            sprite = gameEntity.GetComponent<Sprite>();
         }
         public override void Update(float delta)
         {
@@ -91,12 +96,12 @@ namespace Engine
 
             Inputs(delta);
             CheckWorld();
-            //Flip();
+            Flip();
 
-            Jump();
+            Jump(delta);
             xMovement(delta);
 
-            if(Math.Abs(pB.velocity.X) < 1){pB.velocity.X = 0;}
+            if (Math.Abs(pB.velocity.X) < 1) { pB.velocity.X = 0; }
             pB.velocity.X = Math.Clamp(pB.velocity.X, -maxVelocityX, maxVelocityX);
             pB.velocity.Y = Math.Clamp(pB.velocity.Y, -maxVelocityY, maxVelocityY);
         }
@@ -174,25 +179,23 @@ namespace Engine
         {
             if (moveInput > 0)
             {
-                System.Console.WriteLine("r");
-                gameEntity.transform.size.X = 1;
+                sprite.isFlipedX = false;
             }
             else if (moveInput < 0)
             {
-                System.Console.WriteLine("l");
-                gameEntity.transform.size.X = -1;
+                sprite.isFlipedX = true;
             }
         }
-        void Jump()
+        void Jump(float delta)
         {
             if (isJumping)
             {
-                pB.velocity.Y = -jumpForce;
+                pB.velocity.Y = -jumpForce * delta * 60;
             }
         }
         public enum PlayerStates
         {
-            idle, running, jump, fall, landing, shooting
+            idle, running, jump, fall
         }
     }
 }
