@@ -15,16 +15,16 @@ namespace Engine
 
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\JumpPad.png"),
-                spriteGrid = new Vector2(3, 1),
-                FrameIndex = 0
+                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\EnemiesSprites.png"),
+                spriteGrid = new Vector2(5, 4),
+                FrameIndex = 4
             };
             AddComponent<Sprite>(sprite);
 
             //animation
             Animator animator = new(sprite);
 
-            Animation.Animation jumpAnimation = new(new int[] { 0, 1, 2 }, 0.1f, false);
+            Animation.Animation jumpAnimation = new(new int[] { 4, 9, 14 }, 0.1f, false);
             animator.AddAnimation("Jump", jumpAnimation);
 
             AddComponent<Animator>(animator);

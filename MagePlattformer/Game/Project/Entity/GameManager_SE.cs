@@ -13,13 +13,12 @@ namespace Engine
         {
             name = "GameManager";
 
-            Camera.zoom = 1.5f;
+            Camera.zoom = 1.6f;
 
             AddComponent<GameManagerScript>(new GameManagerScript());
 
             EntityManager.SpawnEntity(new Player(), new Vector2(0, -5));
 
-            EntityManager.SpawnEntity(new JumpPad(), new Vector2(5, 4));
 
             EntityManager.SpawnEntity(new JumpingEnemy(), new Vector2(8, -5));
             EntityManager.SpawnEntity(new WalkEnemy(), new Vector2(5, 0));

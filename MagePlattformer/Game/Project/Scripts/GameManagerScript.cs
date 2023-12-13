@@ -18,13 +18,19 @@ namespace Engine
             {5, typeof(RandomEnemy)}
         };
 
+         Dictionary<int, string> levels = new()
+        {
+            {1, "Level1"},
+            {2, "Level2"},
+            {3, "Level3"}
+        };
+
         List<GameEntity> levelEntities = new();
 
-        // Create and initialize a 15x19 grid with ones at the borders and zeros elsewhere
+        // Create and initialize a level grid
         int[,] _level1 = new int[,]
         {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -90,6 +96,38 @@ namespace Engine
                 Console.WriteLine($"Entity: {key} is not");
                 return null;
             }
+        }
+        //WIP
+        static List<Collider> GenerateColliders(int[,] grid)
+        {
+            //skapar listan av nya colliders
+            List<Collider> colliders = new List<Collider>();
+            int rows = grid.GetLength(0);
+            int cols = grid.GetLength(1);
+
+            //kollar så att positionen är rätt och att det är ett block
+            bool IsValidPos(int row, int col)
+            {
+                return row >= 0 && row < rows && col >= 0 && col < cols && grid[row, col] == 1;
+            }
+
+            // Visited array to keep track of processed positions
+            bool[,] visited = new bool[rows, cols];
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    if (grid[row, col] == 1 && !visited[row, col])
+                    {
+                        //Bygger en collider
+                        Collider collider = new Collider();
+
+                    }
+                }
+            }
+
+            return colliders;
         }
     }
 }
