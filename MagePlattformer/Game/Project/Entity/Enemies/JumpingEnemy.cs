@@ -10,24 +10,23 @@ namespace Engine
     {
         public JumpingEnemy()
         {
-            name = "JumpingEnemy";
+            name = "JumpingRobotEnemy";
 
             //sprite
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\PlayerSpriteSheet.png"),
-                spriteGrid = new Vector2(4, 2),
-                FrameIndex = 4
+                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\EnemiesSprites.png"),
+                spriteGrid = new Vector2(5, 4),
+                FrameIndex = 0
             };
             AddComponent<Sprite>(sprite);
 
             //animation
             Animator animator = new(sprite);
 
-            animator.AddAnimation("Idle", new(new int[] { 4, 5 }, 0.5f, true));
-            animator.AddAnimation("Run", new(new int[] { 0, 1, 2, 3 }, 0.1f, true));
-            animator.AddAnimation("Fall", new(new int[] { 6, }, 0.1f, false));
-            animator.AddAnimation("Jump", new(new int[] { 3 }, 0.1f, false));
+            animator.AddAnimation("Run", new(new int[] { 0 }, 0.1f, false));
+            animator.AddAnimation("Fall", new(new int[] { 1 }, 0.1f, false));
+            animator.AddAnimation("Jump", new(new int[] { 2 }, 0.1f, false));
 
             AddComponent<Animator>(animator);
 
@@ -43,25 +42,25 @@ namespace Engine
 
             Collider collider = new Collider
             (
-                false, 0
+                false, 3
             )
             {
-                size = new Vector2(0.5f, 1)
+                scale = new Vector2(0.75f, 1)
             };
             AddComponent<Collider>(collider);
 
-            //Other scripts
-            EnemyMovement enemyAI = new(20, 20);
-            AddComponent<EnemyMovement>(enemyAI);
-
-            //ground check (child of player)
             Check groundCheck = new(2);
             EntityManager.SpawnEntity(groundCheck, new Vector2(0, 0.4f), new Vector2(0.5f, 0.5f), this);
-            enemyAI.groundCheck = groundCheck.GetComponent<Collider>();
 
             Check wallCheck = new(2);
             EntityManager.SpawnEntity(wallCheck, new Vector2(-0.3f, 0f), new Vector2(0.4f, 0.4f), this);
-            enemyAI.wallCheck = wallCheck.GetComponent<Collider>();
+
+
+            EnemyAIBase enemyAI = new();
+            enemyAI.beheviors.Add(new EnemyRun(30, wallCheck.GetComponent<Collider>(), null, physicsBody));
+            enemyAI.beheviors.Add(new EnemyJump(15, 0.1f, groundCheck.GetComponent<Collider>(), physicsBody));
+
+            AddComponent<EnemyAIBase>(enemyAI);
         }
     }
 }

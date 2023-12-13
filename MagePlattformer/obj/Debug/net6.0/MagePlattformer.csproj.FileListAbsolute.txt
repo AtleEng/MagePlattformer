@@ -45,3 +45,4 @@ C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\De
 c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\BlocksSpriteSheet.png
 c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\PlayerSpriteSheet.png
 c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\JumpPad.png
+c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\EnemiesSprites.png

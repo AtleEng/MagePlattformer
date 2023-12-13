@@ -38,9 +38,9 @@ namespace Animation
                 currentAnimation = name;
                 currentFrame = 0;
                 timer = 0;
-                System.Console.WriteLine($"Playing animation: {name} for {gameEntity.name}");
+                //System.Console.WriteLine($"Playing animation: {name} for {gameEntity.name}");
             }
-            else { System.Console.WriteLine($"Animation {name} doesn't exist!!!"); }
+            else { System.Console.WriteLine($"Animation {name} for {gameEntity.name} doesn't exist!!!"); }
         }
         public override string PrintStats()
         {

@@ -11,8 +11,8 @@ namespace Physics
     {
         public Collider() { }
 
-        public Vector2 origin;
-        public Vector2 size = Vector2.One;
+        public Vector2 offset;
+        public Vector2 scale = Vector2.One;
 
         public bool isTrigger;
 

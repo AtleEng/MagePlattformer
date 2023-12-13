@@ -12,7 +12,7 @@ namespace Engine
     {
         public JumpPadScript() { }
 
-        float jumpForce = -50;
+        float jumpForce = -25;
 
         Animator anim;
 
@@ -23,12 +23,12 @@ namespace Engine
 
         public override void OnTrigger(Collider other)
         {
-            PlayerMovement? player = other.gameEntity.GetComponent<PlayerMovement>();
-            if (player != null)
+            PhysicsBody? pB = other.gameEntity.GetComponent<PhysicsBody>();
+            if (pB != null)
             {
-                if (player.pB.velocity.Y > 0)
+                if (pB.physicsType == PhysicsBody.PhysicsType.dynamicType)
                 {
-                    player.pB.velocity.Y = jumpForce;
+                    pB.velocity.Y = jumpForce;
                     anim.PlayAnimation("Jump");
                 }
             }

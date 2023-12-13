@@ -36,9 +36,14 @@ namespace CoreEngine
             AddSystem(new SpriteSystem());
 
             // Innit all the systems in the right order
+            systems[typeof(SpriteSystem)].Start();
+
             foreach (var system in systems.Values)
             {
-                system.Start();
+                if (system != systems[typeof(SpriteSystem)])
+                {
+                    system.Start();
+                }
             }
             //Console.Clear();
             currentScene.OnInnit();

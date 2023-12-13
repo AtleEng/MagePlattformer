@@ -8,7 +8,7 @@ namespace Engine
 {
     public static class LoadingManager
     {
-        static string prePath = @"Game\Project\StoredEntity\";
+        static string prePath = @"Game\Project\Levels\";
 
         static JsonSerializerOptions options = new JsonSerializerOptions
         {
@@ -16,53 +16,87 @@ namespace Engine
             PropertyNameCaseInsensitive = true
         };
 
-        public static GameEntity LoadEntity(string path)
+        public static void SaveLevel(string path, int[,] level)
+        {
+            // Convert 2D array to jagged array
+            int[][] jaggedArray = ConvertToJaggedArray(level);
+
+            // Convert the jagged array to JSON
+            string json = JsonSerializer.Serialize(jaggedArray);
+
+            // Save the JSON string to a file
+            File.WriteAllText(Path.Combine(prePath, $"{path}.json"), json);
+
+            Console.WriteLine($"JSON saved to {path}");
+        }
+
+        public static int[,]? LoadLevel(string path)
         {
             try
             {
-                string jsonString = File.ReadAllText(Path.Combine(prePath, $"{path}.json"));
-                GameEntity gE = JsonSerializer.Deserialize<GameEntity>(jsonString, options);
+                // Load JSON string from file
+                string json = File.ReadAllText(Path.Combine(prePath, $"{path}.json"));
 
-                if (gE != null)
+                // Deserialize JSON to jagged array
+                int[][] jaggedArray = JsonSerializer.Deserialize<int[][]>(json, options);
+
+                // Convert jagged array to 2D array
+                int[,] level = ConvertTo2DArray(jaggedArray);
+
+                if (level != null)
                 {
-                    System.Console.WriteLine("GameEntity Loaded");
-                    return gE;
+                    System.Console.WriteLine($"{path} loaded");
+                    return level;
                 }
                 else
                 {
-                    System.Console.WriteLine("Deserialization failed, no entity was loaded");
+                    System.Console.WriteLine($"Deserialization failed, {path} was not loaded");
                     return null;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error loading entity {path}: {e.Message}");
+                Console.WriteLine($"Error loading {path}: {e.Message}");
                 return null;
             }
         }
 
-        public static void SaveEntity(GameEntity gE, string name)
+        // Convert 2D array to jagged array
+        static int[][] ConvertToJaggedArray(int[,] array)
         {
-            // Serialize the GameEntity to JSON
-            string json = JsonSerializer.Serialize<GameEntity>(gE, options);
+            int rows = array.GetLength(0);
+            int cols = array.GetLength(1);
 
-            // Save the JSON string to a file
-            File.WriteAllText(Path.Combine(prePath, $"{name}.json"), json);
-        }
-    }
+            int[][] jaggedArray = new int[rows][];
 
-    public class Level : GameEntity
-    {
-        List<GameEntity> gameEntitiesInScene = new()
-        {
-            new GameManager()
-        };
-        public override void OnInnit()
-        {
-            foreach (GameEntity gameEntity in gameEntitiesInScene)
+            for (int i = 0; i < rows; i++)
             {
-                EntityManager.SpawnEntity(gameEntity, gameEntity.transform.position, gameEntity.transform.size, this);
+                jaggedArray[i] = new int[cols];
+                for (int j = 0; j < cols; j++)
+                {
+                    jaggedArray[i][j] = array[i, j];
+                }
             }
+
+            return jaggedArray;
+        }
+        // Convert jagged array to 2D array
+        static int[,] ConvertTo2DArray(int[][] jaggedArray)
+        {
+            int rows = jaggedArray.Length;
+            int cols = jaggedArray[0].Length;
+
+            int[,] array = new int[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    array[i, j] = jaggedArray[i][j];
+                }
+            }
+
+            return array;
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using CoreEngine;
 using Engine;
-using Physics;
+
 namespace Physics
 {
     public class PhysicsSystem : GameSystem
@@ -47,10 +47,10 @@ namespace Physics
             collider.isColliding = false;
 
             Rectangle colliderBox = new Rectangle(
-            gameEntity.worldTransform.position.X + collider.origin.X - collider.gameEntity.worldTransform.size.X * collider.size.X / 2,
-            gameEntity.worldTransform.position.Y + collider.origin.Y - collider.gameEntity.worldTransform.size.Y * collider.size.Y / 2,
-            gameEntity.worldTransform.size.X * collider.size.X,
-            gameEntity.worldTransform.size.Y * collider.size.Y
+            gameEntity.worldTransform.position.X + collider.offset.X - collider.gameEntity.worldTransform.size.X * collider.scale.X / 2,
+            gameEntity.worldTransform.position.Y + collider.offset.Y - collider.gameEntity.worldTransform.size.Y * collider.scale.Y / 2,
+            gameEntity.worldTransform.size.X * collider.scale.X,
+            gameEntity.worldTransform.size.Y * collider.scale.Y
             );
 
             foreach (GameEntity otherGameEntity in Core.activeGameEntities)
@@ -72,10 +72,10 @@ namespace Physics
                     {
 
                         Rectangle otherColliderBox = new Rectangle(
-                            otherGameEntity.worldTransform.position.X + otherCollider.origin.X - otherGameEntity.worldTransform.size.X * otherCollider.size.X / 2,
-                            otherGameEntity.worldTransform.position.Y + otherCollider.origin.Y - otherGameEntity.worldTransform.size.Y * otherCollider.size.Y / 2,
-                            otherGameEntity.worldTransform.size.X * otherCollider.size.X,
-                            otherGameEntity.worldTransform.size.Y * otherCollider.size.Y
+                            otherGameEntity.worldTransform.position.X + otherCollider.offset.X - otherGameEntity.worldTransform.size.X * otherCollider.scale.X / 2,
+                            otherGameEntity.worldTransform.position.Y + otherCollider.offset.Y - otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y / 2,
+                            otherGameEntity.worldTransform.size.X * otherCollider.scale.X,
+                            otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y
                         );
                         if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox))
                         {
@@ -135,13 +135,14 @@ namespace Physics
     }
     public static class PhysicsSettings
     {
-        public static bool[,] collisionMatrix = new bool[3, 3]
+        public static bool[,] collisionMatrix = new bool[4, 4]
         {
             //true = collide / false = ignore collision
-            //player ground check
-            { true, true, false},
-            { true, true, true},
-            { false, true, false}
+            //player ground check enemy
+            { false, true, false, true}, //player
+            { true, false, true, true}, //ground
+            { false, true, false, false}, //check
+            { false, true, false, false} //enemy
         };
     }
 }

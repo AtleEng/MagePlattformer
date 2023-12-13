@@ -34,7 +34,7 @@ namespace Engine
                 true, 1
             )
             {
-                size = new Vector2(0.5f, 0.5f)
+                scale = new Vector2(0.5f, 0.5f)
             };
             AddComponent<Collider>(collider);
 

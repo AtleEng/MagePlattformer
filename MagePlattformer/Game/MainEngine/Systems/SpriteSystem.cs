@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Raylib_cs;
+
 using CoreEngine;
 using Engine;
 using Physics;
@@ -82,8 +83,8 @@ namespace CoreEngine
                 Collider? collider = gameEntity.GetComponent<Collider>();
                 if (collider != null)
                 {
-                    Vector2 p = WorldSpace.ConvertToCameraPosition(gameEntity.worldTransform.position + collider.origin);
-                    Vector2 s = WorldSpace.ConvertToCameraSize(gameEntity.worldTransform.size * collider.size);
+                    Vector2 p = WorldSpace.ConvertToCameraPosition(gameEntity.worldTransform.position + collider.offset);
+                    Vector2 s = WorldSpace.ConvertToCameraSize(gameEntity.worldTransform.size * collider.scale);
 
                     Rectangle colliderBox = new Rectangle(
                     (int)p.X - (int)(s.X / 2), (int)p.Y - (int)(s.Y / 2), //pos
@@ -103,6 +104,7 @@ namespace CoreEngine
 
                     Raylib.DrawRectangleRec(colliderBox, color);
                 }
+
 
                 allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
@@ -143,7 +145,7 @@ namespace CoreEngine
 
                         Raylib.DrawTexturePro(sprite.spriteSheet, source, destRec, Vector2.Zero, 0, sprite.colorTint);
                     }
-                    Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
+                    //Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
                 }
 
                 DisplayGrid();
