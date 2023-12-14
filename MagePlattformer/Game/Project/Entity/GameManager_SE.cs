@@ -18,11 +18,6 @@ namespace Engine
             AddComponent<GameManagerScript>(new GameManagerScript());
 
             EntityManager.SpawnEntity(new Player(), new Vector2(0, -5));
-
-
-            EntityManager.SpawnEntity(new JumpingEnemy(), new Vector2(8, -5));
-            EntityManager.SpawnEntity(new WalkEnemy(), new Vector2(5, 0));
-            EntityManager.SpawnEntity(new RandomEnemy(), new Vector2(8, -6));
         }
 
 

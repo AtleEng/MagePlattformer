@@ -15,8 +15,8 @@ namespace Engine
 
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\EnemiesSprites.png"),
-                spriteGrid = new Vector2(2, 4),
+                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\PortalAndCannon.png"),
+                spriteGrid = new Vector2(4, 2),
                 FrameIndex = 0
             };
             AddComponent<Sprite>(sprite);
@@ -24,7 +24,7 @@ namespace Engine
             //animation
             Animator animator = new(sprite);
 
-            Animation.Animation animation = new(new int[] { 0, 1, 2,3 }, 0.1f, true);
+            Animation.Animation animation = new(new int[] { 0, 1, 2, 3 }, 0.1f, true);
             animator.AddAnimation("Idle", animation);
 
             AddComponent<Animator>(animator);
@@ -44,7 +44,7 @@ namespace Engine
             };
             AddComponent<PhysicsBody>(physicsBody);
 
-            AddComponent<JumpPadScript>(new JumpPadScript());
+            AddComponent<PortalScript>(new PortalScript());
         }
     }
 }

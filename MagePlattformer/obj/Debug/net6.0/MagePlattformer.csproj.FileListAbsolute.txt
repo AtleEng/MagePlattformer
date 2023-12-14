@@ -44,9 +44,9 @@ C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\De
 C:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\obj\Debug\net6.0\ref\MagePlattformer.dll
 c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\BlocksSpriteSheet.png
 c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\PlayerSpriteSheet.png
-c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\JumpPad.png
 c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\EnemiesSprites.png
 C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\BlocksSpriteSheet.png
 C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\EnemiesSprites.png
 C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\PlayerSpriteSheet.png
 C:\Users\atlee\Documents\GameDev\Projects\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\PortalAndCannon.png
+c:\Users\atle.engelbrektsson\Documents\C#\MagePlattformer\MagePlattformer\bin\Debug\net6.0\Game\Project\Sprites\PortalAndCannon.png

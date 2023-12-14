@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using CoreEngine;
 using Engine;
+using System.ComponentModel;
 
 namespace Physics
 {
@@ -13,21 +14,34 @@ namespace Physics
             foreach (GameEntity gameEntity in Core.activeGameEntities)
             {
                 PhysicsBody? physicsBody = gameEntity.GetComponent<PhysicsBody>();
+                Collider? collider = gameEntity.GetComponent<Collider>();
                 if (physicsBody != null)
                 {
                     UpdatePhysics(physicsBody, delta);
 
+                    if (collider != null)
+                    {
+                        CheckCollision(gameEntity, collider, physicsBody);
+                    }
+                    Core.UpdateChildren(physicsBody.gameEntity.parent);
                 }
-                Collider? collider = gameEntity.GetComponent<Collider>();
+                else
                 if (collider != null)
                 {
-                    CheckCollision(gameEntity, collider, physicsBody);
+                    if (collider.isTrigger)
+                    {
+                        CheckCollision(gameEntity, collider, physicsBody);
+                    }
                 }
+
             }
         }
         void UpdatePhysics(PhysicsBody physicsBody, float delta)
         {
-            if (physicsBody.physicsType == PhysicsBody.PhysicsType.staticType) { return; }
+            if (physicsBody.physicsType == PhysicsBody.PhysicsType.staticType)
+            {
+                return;
+            }
             // Apply drag separately to X and Y
             physicsBody.velocity.X *= 1 - physicsBody.dragX * delta;
             physicsBody.velocity.Y *= 1 - physicsBody.dragY * delta;
@@ -39,8 +53,6 @@ namespace Physics
             physicsBody.gameEntity.transform.position += physicsBody.velocity * delta;
 
             physicsBody.acceleration = Vector2.Zero;
-
-            Core.UpdateChildren(physicsBody.gameEntity.parent);
         }
         void CheckCollision(GameEntity gameEntity, Collider collider, PhysicsBody physicsBody)
         {
@@ -70,13 +82,12 @@ namespace Physics
 
                     if (PhysicsSettings.collisionMatrix[collider.layer, otherCollider.layer])
                     {
-
                         Rectangle otherColliderBox = new Rectangle(
-                            otherGameEntity.worldTransform.position.X + otherCollider.offset.X - otherGameEntity.worldTransform.size.X * otherCollider.scale.X / 2,
-                            otherGameEntity.worldTransform.position.Y + otherCollider.offset.Y - otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y / 2,
-                            otherGameEntity.worldTransform.size.X * otherCollider.scale.X,
-                            otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y
-                        );
+                                        otherGameEntity.worldTransform.position.X + otherCollider.offset.X - otherGameEntity.worldTransform.size.X * otherCollider.scale.X / 2,
+                                        otherGameEntity.worldTransform.position.Y + otherCollider.offset.Y - otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y / 2,
+                                        otherGameEntity.worldTransform.size.X * otherCollider.scale.X,
+                                        otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y
+                                    );
                         if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox))
                         {
                             collider.isColliding = true;
@@ -86,14 +97,18 @@ namespace Physics
                             }
                             else if (physicsBody != null && !otherCollider.isTrigger)
                             {
-                                SolveCollision(collider, colliderBox, otherColliderBox, physicsBody);
+                                Solve(collider, colliderBox, otherColliderBox, physicsBody);
                             }
                         }
                     }
                 }
             }
         }
-        void SolveCollision(Collider collider, Rectangle box, Rectangle otherBox, PhysicsBody physicsBody)
+        void Detect()
+        {
+
+        }
+        void Solve(Collider collider, Rectangle box, Rectangle otherBox, PhysicsBody physicsBody)
         {
             float xOverlap = Math.Min(box.X + box.Width, otherBox.X + otherBox.Width) - Math.Max(box.X, otherBox.X);
             float yOverlap = Math.Min(box.Y + box.Height, otherBox.Y + otherBox.Height) - Math.Max(box.Y, otherBox.Y);

@@ -9,7 +9,27 @@ namespace Engine
 {
     public static class LoadingManager
     {
+        static public int currentLevel = 0;
         static string prePath = @"Game\Project\Levels\";
+        static Dictionary<int, Type> entitysInLevel = new()
+        {
+            {1, typeof(Block)},
+            {2, typeof(JumpPad)},
+            { 3, typeof(WalkEnemy)},
+            { 4, typeof(JumpingEnemy)},
+            {5, typeof(RandomEnemy)},
+            {9, typeof(Portal)},
+        };
+
+        static Dictionary<int, string> levels = new()
+        {
+            {1, "Level1"},
+            {2, "Level2"},
+            {3, "Level3"}
+        };
+
+        static List<GameEntity> levelEntities = new();
+
 
         static JsonSerializerOptions options = new JsonSerializerOptions
         {
@@ -19,19 +39,29 @@ namespace Engine
 
         public static void SaveLevel(string path, int[,] level)
         {
-            // Convert 2D array to jagged array
+            // omvandla 2D array till en jagged array (för att json inte stödjer det)
             int[][] jaggedArray = ConvertToJaggedArray(level);
 
-            // Convert the jagged array to JSON
+            // omvandla jagged array to JSON
             string json = JsonSerializer.Serialize(jaggedArray);
 
-            // Save the JSON string to a file
+            // Spara json på filen
             File.WriteAllText(Path.Combine(prePath, $"{path}.json"), json);
 
             Console.WriteLine($"JSON saved to {path}");
         }
 
-        public static int[,]? LoadLevel(string path)
+        static public void Load(int i)
+        {
+            if (levels.ContainsKey(i))
+            {
+                currentLevel = i;
+                ClearLevel();
+                int[,] level = LoadLevel(levels[i]);
+                SpawEntitiesInLevel(level);
+            }
+        }
+        public static int[,] LoadLevel(string path)
         {
             try
             {
@@ -62,6 +92,86 @@ namespace Engine
             }
         }
 
+        static void SpawEntitiesInLevel(int[,] level)
+        {
+            for (int x = 0; x < level.GetLength(0); x++)
+            {
+                for (int y = 0; y < level.GetLength(1); y++)
+                {
+                    if (level[x, y] > 0)
+                    {
+                        GameEntity entity = GetEntityInstance(level[x, y]);
+                        levelEntities.Add(entity);
+
+                        Vector2 spawPos = new Vector2(y - level.GetLength(1) / 2, x - level.GetLength(0) / 2);
+
+                        EntityManager.SpawnEntity(entity, spawPos);
+                    }
+                }
+            }
+        }
+        static void ClearLevel()
+        {
+            foreach (GameEntity entity in levelEntities)
+            {
+                EntityManager.DestroyEntity(entity);
+            }
+            levelEntities.Clear();
+        }
+        // Method to spawn GameEntity based on int key
+        static GameEntity GetEntityInstance(int key)
+        {
+            // Check if the key exists in the dictionary
+            if (entitysInLevel.ContainsKey(key))
+            {
+                Type entityType = entitysInLevel[key];
+                // Use reflection to create an instance of the specified type
+                GameEntity newEntity = (GameEntity)Activator.CreateInstance(entityType);
+
+                if (newEntity == null) { System.Console.WriteLine($"Error, the number {key} is wrong"); }
+                // Return the spawned GameEntity
+                return newEntity;
+            }
+            else
+            {
+                Console.WriteLine($"Entity: {key} is not");
+                return null;
+            }
+        }
+        //WIP
+        static List<Collider> GenerateColliders(int[,] grid)
+        {
+            //skapar listan av nya colliders
+            List<Collider> colliders = new List<Collider>();
+            int rows = grid.GetLength(0);
+            int cols = grid.GetLength(1);
+
+            //kollar så att positionen är rätt och att det är ett block
+            bool IsValidPos(int row, int col)
+            {
+                return row >= 0 && row < rows && col >= 0 && col < cols && grid[row, col] == 1;
+            }
+
+            // Visited array to keep track of processed positions
+            bool[,] visited = new bool[rows, cols];
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    if (grid[row, col] == 1 && !visited[row, col])
+                    {
+                        //Bygger en collider
+                        Collider collider = new Collider();
+
+                    }
+                }
+            }
+
+            return colliders;
+        }
+
+
         // Convert 2D array to jagged array
         static int[][] ConvertToJaggedArray(int[,] array)
         {
@@ -70,15 +180,14 @@ namespace Engine
 
             int[][] jaggedArray = new int[rows][];
 
-            for (int i = 0; i < rows; i++)
+            for (int x = 0; x < rows; x++)
             {
-                jaggedArray[i] = new int[cols];
-                for (int j = 0; j < cols; j++)
+                jaggedArray[x] = new int[cols];
+                for (int y = 0; y < cols; y++)
                 {
-                    jaggedArray[i][j] = array[i, j];
+                    jaggedArray[x][y] = array[x, y];
                 }
             }
-
             return jaggedArray;
         }
         // Convert jagged array to 2D array
@@ -89,14 +198,13 @@ namespace Engine
 
             int[,] array = new int[rows, cols];
 
-            for (int i = 0; i < rows; i++)
+            for (int x = 0; x < rows; x++)
             {
-                for (int j = 0; j < cols; j++)
+                for (int y = 0; y < cols; y++)
                 {
-                    array[i, j] = jaggedArray[i][j];
+                    array[x, y] = jaggedArray[x][y];
                 }
             }
-
             return array;
         }
     }
