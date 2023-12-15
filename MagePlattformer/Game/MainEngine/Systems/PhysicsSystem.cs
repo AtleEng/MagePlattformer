@@ -61,7 +61,7 @@ namespace Physics
             List<Rectangle> otherAabbs = new();
             List<Rectangle> collisionRecs = new();
 
-            Rectangle aabb = GetColliderRec(gameEntity, collider);
+            Rectangle aabb = GetCollisionRectangleFromCollider(gameEntity, collider);
 
             foreach (GameEntity otherGameEntity in Core.activeGameEntities)
             {
@@ -80,9 +80,9 @@ namespace Physics
 
                     if (PhysicsSettings.collisionMatrix[collider.layer, otherCollider.layer])
                     {
-                        Rectangle otherAabb = GetColliderRec(otherGameEntity, otherCollider);
+                        Rectangle otherAabb = GetCollisionRectangleFromCollider(otherGameEntity, otherCollider);
 
-                        Rectangle collisonRec = Raylib.GetCollisionRec(aabb, otherAabb);
+                        Rectangle collisonRec = GetCollisionRec(aabb, otherAabb);
                         float area = collisonRec.X * collisonRec.Y;
                         if (area != 0)
                         {
@@ -179,7 +179,7 @@ namespace Physics
                 Core.UpdateChildren(collider.gameEntity.parent);
             }
         }
-        static Rectangle GetColliderRec(GameEntity entity, Collider collider)
+        static Rectangle GetCollisionRectangleFromCollider(GameEntity entity, Collider collider)
         {
             return new Rectangle
             (
@@ -188,6 +188,21 @@ namespace Physics
                 entity.worldTransform.size.X * collider.scale.X,
                 entity.worldTransform.size.Y * collider.scale.Y
             );
+        }
+        static public Rectangle GetCollisionRec(Rectangle rec, Rectangle other)
+        {
+            float x1 = Math.Max(rec.X, other.X);
+            float y1 = Math.Max(rec.Y, other.Y);
+
+            float x2 = Math.Min(rec.X + rec.Width, other.X + other.Width);
+            float y2 = Math.Min(rec.Y + rec.Height, other.Y + other.Height);
+
+            // Check for no-overlap conditions
+            if (x1 >= x2 || y1 >= y2)
+            {
+                return new Rectangle(); // No collision
+            }
+            return new Rectangle(x1, y1, x2 - x1, y2 - y1);
         }
         static void SortOtherAabbsByArea(List<Rectangle> otherAabbs, List<Rectangle> collisionRecs)
         {
@@ -212,45 +227,6 @@ namespace Physics
                 int indexB = otherAabbs.IndexOf(b);
                 return comparer.Compare(collisionRecs[indexA], collisionRecs[indexB]);
             });
-        }
-        void Solve(Collider collider, Rectangle box, Rectangle otherBox, PhysicsBody physicsBody)
-        {
-            float xOverlap = Math.Min(box.X + box.Width, otherBox.X + otherBox.Width) - Math.Max(box.X, otherBox.X);
-            float yOverlap = Math.Min(box.Y + box.Height, otherBox.Y + otherBox.Height) - Math.Max(box.Y, otherBox.Y);
-
-            if (xOverlap < yOverlap)
-            {
-                int direction = Math.Sign(physicsBody.velocity.X);
-
-                if (box.X < otherBox.X)
-                {
-                    collider.gameEntity.transform.position = new Vector2(otherBox.X - box.Width / 2, collider.gameEntity.transform.position.Y);
-                }
-                else
-                {
-                    collider.gameEntity.transform.position = new Vector2(otherBox.X + otherBox.Width + box.Width / 2, collider.gameEntity.transform.position.Y);
-                }
-
-                // Adjust position before inverting velocity
-                physicsBody.velocity.X *= -direction * physicsBody.elasticity;
-            }
-            else
-            {
-                int direction = Math.Sign(physicsBody.velocity.Y);
-
-                if (box.Y < otherBox.Y)
-                {
-                    collider.gameEntity.transform.position = new Vector2(collider.gameEntity.transform.position.X, otherBox.Y - box.Height / 2);
-                }
-                else
-                {
-                    collider.gameEntity.transform.position = new Vector2(collider.gameEntity.transform.position.X, otherBox.Y + otherBox.Height + box.Height / 2);
-                }
-
-                // Adjust position before inverting velocity
-                physicsBody.velocity.Y *= -direction * physicsBody.elasticity;
-            }
-            Core.UpdateChildren(collider.gameEntity.parent);
         }
     }
     public static class PhysicsSettings

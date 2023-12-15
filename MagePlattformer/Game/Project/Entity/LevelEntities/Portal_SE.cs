@@ -9,13 +9,18 @@ namespace Engine
 {
     public class Portal : GameEntity
     {
+        static Texture2D texture;
         public Portal()
         {
+            if (texture.Id == 0)
+            {
+                texture = Raylib.LoadTexture(@"Game\Project\Sprites\PortalAndCannon.png");
+            }
             name = "Portal";
 
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\PortalAndCannon.png"),
+                spriteSheet = texture,
                 spriteGrid = new Vector2(4, 2),
                 FrameIndex = 0
             };

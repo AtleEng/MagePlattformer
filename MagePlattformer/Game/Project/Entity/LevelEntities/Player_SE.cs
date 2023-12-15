@@ -8,6 +8,7 @@ namespace Engine
 {
     public class Player : GameEntity
     {
+        static Texture2D texture;
         public Player()
         {
             name = "Player";

@@ -79,7 +79,7 @@ namespace CoreEngine
                 Sprite? spriteComponent = gameEntity.GetComponent<Sprite>();
                 if (spriteComponent != null) { allSprites.Add(spriteComponent); }
 
-                /*
+
                 Collider? collider = gameEntity.GetComponent<Collider>();
                 if (collider != null)
                 {
@@ -104,7 +104,7 @@ namespace CoreEngine
 
                     Raylib.DrawRectangleRec(colliderBox, color);
                 }
-                */
+
 
                 allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
@@ -118,7 +118,7 @@ namespace CoreEngine
                     (int)s.X, (int)s.Y //size
                     );
 
-                    //Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
+                    Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
 
                     if (sprite.spriteSheet.Id != 0)
                     {
@@ -145,11 +145,11 @@ namespace CoreEngine
 
                         Raylib.DrawTexturePro(sprite.spriteSheet, source, destRec, Vector2.Zero, 0, sprite.colorTint);
                     }
-                    //Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
+                    Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
                 }
 
-                //DisplayGrid();
-                //Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
+                DisplayGrid();
+                Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
             }
         }
         void SetValuesOfWindow()

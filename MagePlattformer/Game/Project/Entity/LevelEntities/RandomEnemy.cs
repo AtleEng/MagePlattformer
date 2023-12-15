@@ -8,14 +8,19 @@ namespace Engine
 {
     public class RandomEnemy : GameEntity
     {
+        static Texture2D texture;
         public RandomEnemy()
         {
+            if (texture.Id == 0)
+            {
+                texture = Raylib.LoadTexture(@"Game\Project\Sprites\EnemiesSprites.png");
+            }
             name = "RandomEnemy";
 
             //sprite
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\EnemiesSprites.png"),
+                spriteSheet = texture,
                 spriteGrid = new Vector2(5, 4),
                 FrameIndex = 15
             };
