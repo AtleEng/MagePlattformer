@@ -79,7 +79,7 @@ namespace CoreEngine
                 Sprite? spriteComponent = gameEntity.GetComponent<Sprite>();
                 if (spriteComponent != null) { allSprites.Add(spriteComponent); }
 
-
+                /*
                 Collider? collider = gameEntity.GetComponent<Collider>();
                 if (collider != null)
                 {
@@ -104,7 +104,7 @@ namespace CoreEngine
 
                     Raylib.DrawRectangleRec(colliderBox, color);
                 }
-
+                */
 
                 allSprites.Sort((a, b) => a.layer.CompareTo(b.layer));
 
@@ -148,8 +148,8 @@ namespace CoreEngine
                     //Raylib.DrawCircle((int)p.X, (int)p.Y, 5, Color.RED);
                 }
 
-                DisplayGrid();
-                Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
+                //DisplayGrid();
+                //Raylib.DrawText($"GameEntitys:{Core.gameEntities.Count}\nFPS:{Raylib.GetFPS()}", 20, 20, 20, Color.RAYWHITE);
             }
         }
         void SetValuesOfWindow()

@@ -2,7 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using CoreEngine;
 using Engine;
-using System.ComponentModel;
+
 
 namespace Physics
 {
@@ -58,12 +58,10 @@ namespace Physics
         {
             collider.isColliding = false;
 
-            Rectangle colliderBox = new Rectangle(
-            gameEntity.worldTransform.position.X + collider.offset.X - collider.gameEntity.worldTransform.size.X * collider.scale.X / 2,
-            gameEntity.worldTransform.position.Y + collider.offset.Y - collider.gameEntity.worldTransform.size.Y * collider.scale.Y / 2,
-            gameEntity.worldTransform.size.X * collider.scale.X,
-            gameEntity.worldTransform.size.Y * collider.scale.Y
-            );
+            List<Rectangle> otherAabbs = new();
+            List<Rectangle> collisionRecs = new();
+
+            Rectangle aabb = GetColliderRec(gameEntity, collider);
 
             foreach (GameEntity otherGameEntity in Core.activeGameEntities)
             {
@@ -82,13 +80,11 @@ namespace Physics
 
                     if (PhysicsSettings.collisionMatrix[collider.layer, otherCollider.layer])
                     {
-                        Rectangle otherColliderBox = new Rectangle(
-                                        otherGameEntity.worldTransform.position.X + otherCollider.offset.X - otherGameEntity.worldTransform.size.X * otherCollider.scale.X / 2,
-                                        otherGameEntity.worldTransform.position.Y + otherCollider.offset.Y - otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y / 2,
-                                        otherGameEntity.worldTransform.size.X * otherCollider.scale.X,
-                                        otherGameEntity.worldTransform.size.Y * otherCollider.scale.Y
-                                    );
-                        if (Raylib.CheckCollisionRecs(colliderBox, otherColliderBox))
+                        Rectangle otherAabb = GetColliderRec(otherGameEntity, otherCollider);
+
+                        Rectangle collisonRec = Raylib.GetCollisionRec(aabb, otherAabb);
+                        float area = collisonRec.X * collisonRec.Y;
+                        if (area != 0)
                         {
                             collider.isColliding = true;
                             if (collider.isTrigger)
@@ -97,16 +93,125 @@ namespace Physics
                             }
                             else if (physicsBody != null && !otherCollider.isTrigger)
                             {
-                                Solve(collider, colliderBox, otherColliderBox, physicsBody);
+                                otherAabbs.Add(otherAabb);
+                                collisionRecs.Add(collisonRec);
                             }
                         }
                     }
                 }
             }
-        }
-        void Detect()
-        {
+            if (otherAabbs.Count > 0)
+            {
+                //sorterar collider med hur stor deras area är
+                SortOtherAabbsByArea(otherAabbs, collisionRecs);
 
+                for (int i = 0; i < otherAabbs.Count; i++)
+                {
+                    float xOverlap = Math.Min(aabb.X + aabb.Width, otherAabbs[i].X + otherAabbs[i].Width) - Math.Max(aabb.X, otherAabbs[i].X);
+                    float yOverlap = Math.Min(aabb.Y + aabb.Height, otherAabbs[i].Y + otherAabbs[i].Height) - Math.Max(aabb.Y, otherAabbs[i].Y);
+
+                    if (xOverlap < yOverlap)
+                    {
+                        int direction = Math.Sign(physicsBody.velocity.X);
+
+                        if (aabb.X < otherAabbs[i].X)
+                        {
+                            collider.gameEntity.transform.position = new Vector2(otherAabbs[i].X - aabb.Width / 2, collider.gameEntity.transform.position.Y);
+                        }
+                        else
+                        {
+                            collider.gameEntity.transform.position = new Vector2(otherAabbs[i].X + otherAabbs[i].Width + aabb.Width / 2, collider.gameEntity.transform.position.Y);
+                        }
+
+                        // Adjust position before inverting velocity
+                        physicsBody.velocity.X *= -direction * physicsBody.elasticity;
+                    }
+                    else
+                    {
+                        int direction = Math.Sign(physicsBody.velocity.Y);
+
+                        if (aabb.Y < otherAabbs[i].Y)
+                        {
+                            collider.gameEntity.transform.position = new Vector2(collider.gameEntity.transform.position.X, otherAabbs[i].Y - aabb.Height / 2);
+                        }
+                        else
+                        {
+                            collider.gameEntity.transform.position = new Vector2(collider.gameEntity.transform.position.X, otherAabbs[i].Y + otherAabbs[i].Height + aabb.Height / 2);
+                        }
+
+                        // Adjust position before inverting velocity
+                        physicsBody.velocity.Y *= -direction * physicsBody.elasticity;
+                    }
+                    //update all collider to new pos
+                    for (int j = i; j < otherAabbs.Count; j++)
+                    {
+                        float newXOverlap = Math.Min(otherAabbs[i].X + otherAabbs[i].Width, otherAabbs[j].X + otherAabbs[j].Width) - Math.Max(otherAabbs[i].X, otherAabbs[j].X);
+                        float newYOverlap = Math.Min(otherAabbs[i].Y + otherAabbs[i].Height, otherAabbs[j].Y + otherAabbs[j].Height) - Math.Max(otherAabbs[i].Y, otherAabbs[j].Y);
+
+                        if (newXOverlap < newYOverlap)
+                        {
+                            int direction = Math.Sign(physicsBody.velocity.X);
+
+                            if (otherAabbs[i].X < otherAabbs[j].X)
+                            {
+                                otherAabbs[j] = new Rectangle(otherAabbs[j].X - otherAabbs[i].Width / 2, otherAabbs[j].Y, otherAabbs[j].Width, otherAabbs[j].Height);
+                            }
+                            else
+                            {
+                                otherAabbs[j] = new Rectangle(otherAabbs[j].X + otherAabbs[i].Width / 2, otherAabbs[j].Y, otherAabbs[j].Width, otherAabbs[j].Height);
+                            }
+                        }
+                        else
+                        {
+                            int direction = Math.Sign(physicsBody.velocity.Y);
+
+                            if (otherAabbs[i].Y < otherAabbs[j].Y)
+                            {
+                                otherAabbs[j] = new Rectangle(otherAabbs[j].X, otherAabbs[j].Y - otherAabbs[i].Height / 2, otherAabbs[j].Width, otherAabbs[j].Height);
+                            }
+                            else
+                            {
+                                otherAabbs[j] = new Rectangle(otherAabbs[j].X, otherAabbs[j].Y + otherAabbs[i].Height / 2, otherAabbs[j].Width, otherAabbs[j].Height);
+                            }
+                        }
+                    }
+                }
+                Core.UpdateChildren(collider.gameEntity.parent);
+            }
+        }
+        static Rectangle GetColliderRec(GameEntity entity, Collider collider)
+        {
+            return new Rectangle
+            (
+                entity.worldTransform.position.X + collider.offset.X - entity.worldTransform.size.X * collider.scale.X / 2,
+                entity.worldTransform.position.Y + collider.offset.Y - entity.worldTransform.size.Y * collider.scale.Y / 2,
+                entity.worldTransform.size.X * collider.scale.X,
+                entity.worldTransform.size.Y * collider.scale.Y
+            );
+        }
+        static void SortOtherAabbsByArea(List<Rectangle> otherAabbs, List<Rectangle> collisionRecs)
+        {
+            // Check if the lists have the same length
+            if (otherAabbs.Count != collisionRecs.Count)
+            {
+                throw new ArgumentException("Lists must have the same length dummy, i dont even know how you make this error happen");
+            }
+
+            // Create a comparer that compares rectangles by area in descending order
+            var comparer = Comparer<Rectangle>.Create((rect1, rect2) =>
+            {
+                float area1 = rect1.Width * rect1.Height;
+                float area2 = rect2.Width * rect2.Height;
+                return area2.CompareTo(area1); // Compare in descending order
+            });
+
+            // Sort otherAabbs using the comparer
+            otherAabbs.Sort((a, b) =>
+            {
+                int indexA = otherAabbs.IndexOf(a);
+                int indexB = otherAabbs.IndexOf(b);
+                return comparer.Compare(collisionRecs[indexA], collisionRecs[indexB]);
+            });
         }
         void Solve(Collider collider, Rectangle box, Rectangle otherBox, PhysicsBody physicsBody)
         {
