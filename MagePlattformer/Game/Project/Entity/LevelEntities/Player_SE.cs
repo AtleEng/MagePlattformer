@@ -11,12 +11,16 @@ namespace Engine
         static Texture2D texture;
         public Player()
         {
+             if (texture.Id == 0)
+            {
+                texture = Raylib.LoadTexture(@"Game\Project\Sprites\PlayerSpriteSheet.png");
+            }
             name = "Player";
 
             //sprite
             Sprite sprite = new Sprite
             {
-                spriteSheet = Raylib.LoadTexture(@"Game\Project\Sprites\PlayerSpriteSheet.png"),
+                spriteSheet = texture,
                 spriteGrid = new Vector2(4, 2),
                 FrameIndex = 4
             };
@@ -57,7 +61,7 @@ namespace Engine
 
             //ground check (child of player)
             Check check = new(2);
-            EntityManager.SpawnEntity(check, new Vector2(0, 0.4f), new Vector2(0.5f, 0.5f), this);
+            EntityManager.SpawnEntity(check, new Vector2(0, 0.4f), new Vector2(0.4f, 0.5f), this);
             playerMovement.groundCheck = check.GetComponent<Collider>();
         }
     }

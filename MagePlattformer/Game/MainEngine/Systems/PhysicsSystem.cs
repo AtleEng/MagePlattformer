@@ -30,7 +30,6 @@ namespace Physics
                         CheckCollision(gameEntity, collider, physicsBody);
                     }
                 }
-
             }
         }
         void UpdatePhysics(PhysicsBody physicsBody, float delta)
