@@ -118,7 +118,7 @@ namespace CoreEngine
                     (int)s.X, (int)s.Y //size
                     );
 
-                    Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
+                    //Raylib.DrawRectangleRec(destRec, new Color(255, 255, 255, 100));
 
                     if (sprite.spriteSheet.Id != 0)
                     {

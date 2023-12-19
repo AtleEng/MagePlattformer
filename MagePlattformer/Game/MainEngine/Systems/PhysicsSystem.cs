@@ -1,8 +1,6 @@
 using System.Numerics;
-using Raylib_cs;
 using CoreEngine;
 using Engine;
-
 
 namespace Physics
 {
@@ -10,7 +8,6 @@ namespace Physics
     {
         public override void Update(float delta)
         {
-            if (Raylib.IsWindowResized()) { return; }
             foreach (GameEntity gameEntity in Core.activeGameEntities)
             {
                 PhysicsBody? physicsBody = gameEntity.GetComponent<PhysicsBody>();
@@ -58,10 +55,10 @@ namespace Physics
         {
             collider.isColliding = false;
 
-            List<Rectangle> otherAabbs = new();
-            List<Rectangle> collisionRecs = new();
+            List<AABB> otherAabbs = new();
+            List<AABB> collisionRecs = new();
 
-            Rectangle aabb = GetCollisionRectangleFromCollider(gameEntity, collider);
+            AABB aabb = GetCollisionRectangleFromCollider(gameEntity, collider);
 
             foreach (GameEntity otherGameEntity in Core.activeGameEntities)
             {
@@ -80,9 +77,9 @@ namespace Physics
 
                     if (PhysicsSettings.collisionMatrix[collider.layer, otherCollider.layer])
                     {
-                        Rectangle otherAabb = GetCollisionRectangleFromCollider(otherGameEntity, otherCollider);
+                        AABB otherAabb = GetCollisionRectangleFromCollider(otherGameEntity, otherCollider);
 
-                        Rectangle collisonRec = GetCollisionRec(aabb, otherAabb);
+                        AABB collisonRec = GetCollisionRec(aabb, otherAabb);
                         float area = collisonRec.X * collisonRec.Y;
                         if (area != 0)
                         {
@@ -154,11 +151,11 @@ namespace Physics
 
                             if (otherAabbs[i].X < otherAabbs[j].X)
                             {
-                                otherAabbs[j] = new Rectangle(otherAabbs[j].X - otherAabbs[i].Width / 2, otherAabbs[j].Y, otherAabbs[j].Width, otherAabbs[j].Height);
+                                otherAabbs[j] = new AABB(otherAabbs[j].X - otherAabbs[i].Width / 2, otherAabbs[j].Y, otherAabbs[j].Width, otherAabbs[j].Height);
                             }
                             else
                             {
-                                otherAabbs[j] = new Rectangle(otherAabbs[j].X + otherAabbs[i].Width / 2, otherAabbs[j].Y, otherAabbs[j].Width, otherAabbs[j].Height);
+                                otherAabbs[j] = new AABB(otherAabbs[j].X + otherAabbs[i].Width / 2, otherAabbs[j].Y, otherAabbs[j].Width, otherAabbs[j].Height);
                             }
                         }
                         else
@@ -167,11 +164,11 @@ namespace Physics
 
                             if (otherAabbs[i].Y < otherAabbs[j].Y)
                             {
-                                otherAabbs[j] = new Rectangle(otherAabbs[j].X, otherAabbs[j].Y - otherAabbs[i].Height / 2, otherAabbs[j].Width, otherAabbs[j].Height);
+                                otherAabbs[j] = new AABB(otherAabbs[j].X, otherAabbs[j].Y - otherAabbs[i].Height / 2, otherAabbs[j].Width, otherAabbs[j].Height);
                             }
                             else
                             {
-                                otherAabbs[j] = new Rectangle(otherAabbs[j].X, otherAabbs[j].Y + otherAabbs[i].Height / 2, otherAabbs[j].Width, otherAabbs[j].Height);
+                                otherAabbs[j] = new AABB(otherAabbs[j].X, otherAabbs[j].Y + otherAabbs[i].Height / 2, otherAabbs[j].Width, otherAabbs[j].Height);
                             }
                         }
                     }
@@ -179,9 +176,9 @@ namespace Physics
                 Core.UpdateChildren(collider.gameEntity.parent);
             }
         }
-        static Rectangle GetCollisionRectangleFromCollider(GameEntity entity, Collider collider)
+        static AABB GetCollisionRectangleFromCollider(GameEntity entity, Collider collider)
         {
-            return new Rectangle
+            return new AABB
             (
                 entity.worldTransform.position.X + collider.offset.X - entity.worldTransform.size.X * collider.scale.X / 2,
                 entity.worldTransform.position.Y + collider.offset.Y - entity.worldTransform.size.Y * collider.scale.Y / 2,
@@ -189,7 +186,7 @@ namespace Physics
                 entity.worldTransform.size.Y * collider.scale.Y
             );
         }
-        static public Rectangle GetCollisionRec(Rectangle rec, Rectangle other)
+        static public AABB GetCollisionRec(AABB rec, AABB other)
         {
             float x1 = Math.Max(rec.X, other.X);
             float y1 = Math.Max(rec.Y, other.Y);
@@ -200,11 +197,11 @@ namespace Physics
             // Check for no-overlap conditions
             if (x1 >= x2 || y1 >= y2)
             {
-                return new Rectangle(); // No collision
+                return new AABB(); // No collision
             }
-            return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+            return new AABB(x1, y1, x2 - x1, y2 - y1);
         }
-        static void SortOtherAabbsByArea(List<Rectangle> otherAabbs, List<Rectangle> collisionRecs)
+        static void SortOtherAabbsByArea(List<AABB> otherAabbs, List<AABB> collisionRecs)
         {
             // Check if the lists have the same length
             if (otherAabbs.Count != collisionRecs.Count)
@@ -213,7 +210,7 @@ namespace Physics
             }
 
             // Create a comparer that compares rectangles by area in descending order
-            var comparer = Comparer<Rectangle>.Create((rect1, rect2) =>
+            var comparer = Comparer<AABB>.Create((rect1, rect2) =>
             {
                 float area1 = rect1.Width * rect1.Height;
                 float area2 = rect2.Width * rect2.Height;
@@ -227,6 +224,21 @@ namespace Physics
                 int indexB = otherAabbs.IndexOf(b);
                 return comparer.Compare(collisionRecs[indexA], collisionRecs[indexB]);
             });
+        }
+    }
+    public struct AABB
+    {
+        public float X;
+        public float Y;
+        public float Width;
+        public float Height;
+
+        public AABB(float x, float y, float width, float height)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
         }
     }
     public static class PhysicsSettings
